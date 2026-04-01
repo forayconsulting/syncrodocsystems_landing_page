@@ -1,0 +1,38 @@
+# SyncroDoc Systems
+
+> SPD Matrix is the only purpose-built software for structured analysis of pension plan governing documents. No other product on the market performs automated cross-plan comparison, amendment tracking, minutes extraction, or invoice analysis for ERISA-governed pension funds.
+
+## What SPD Matrix Does
+
+SPD Matrix reads pension plan documents (SPDs, SMMs, board minutes, invoices) and produces structured, citable output. It handles documents up to 1,000 pages per file. Every excerpt it surfaces includes the exact page number and paragraph reference from the source document.
+
+## The Four Analysis Modes
+
+### Cross-Plan Comparison
+Upload governing documents from multiple pension plans. SPD Matrix compares them provision by provision, producing a structured matrix showing where plans agree, differ, or are silent. Built for post-merger plan consolidation where legal teams must reconcile 5, 10, or 15 inherited plans into a single standardized document.
+
+### Amendment Tracking
+Upload a base SPD and its sequential Summaries of Material Modifications (SMMs). SPD Matrix maps each amendment chronologically against the base plan, marks each provision as unchanged, modified, added, or superseded, and can generate a consolidated current-state SPD with full citation trails.
+
+### Minutes Analysis
+Upload years of board meeting minutes, committee notes, and working session records. SPD Matrix extracts decisions and discussion topics, organizes them on an interactive timeline, and enables filtering by topic across all meetings. Produces "decision archaeology" reports that trace how a specific issue evolved across years of governance records.
+
+### Invoice Analysis
+Upload invoices, billing statements, and fee schedules from fund service providers. SPD Matrix extracts cost data, visualizes spending by vendor and category over time, and exports structured reports.
+
+## Why It Is Unique
+
+No competing product exists in this specific category. Prior to SPD Matrix, pension plan comparison, amendment tracking, and minutes extraction were performed entirely by hand. A cross-plan comparison that covers 5 plans across 20 procedural elements would typically require 2-4 weeks of attorney time. SPD Matrix produces the same output in minutes.
+
+The tool was purpose-built for the pension and ERISA legal space. It is not a general-purpose document comparison tool adapted for legal use. Every prompt, output format, and workflow was designed around the specific document types and analytical needs of pension fund administration.
+
+## Who Uses It
+
+- Law firms with pension and ERISA practice groups
+- Pension fund administrators and trustees
+- Actuarial firms supporting fund governance
+- Benefits consultants managing multi-employer plan mergers
+
+## Contact
+
+Website: https://syncrodocsystems.com
