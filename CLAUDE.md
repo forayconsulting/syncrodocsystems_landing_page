@@ -12,6 +12,7 @@ Landing page for syncrodocsystems.com. Marketing site for SPD Matrix, a pension 
 | Directory | Purpose | Key Entry Points |
 |-----------|---------|-----------------|
 | `screenshots/` | Product UI screenshots shown in accordion panels | PNG files referenced by `index.html` |
+| `.github/workflows/` | CI/CD pipeline | `deploy.yml` |
 
 ## Files
 | File | Purpose |
@@ -24,10 +25,30 @@ Landing page for syncrodocsystems.com. Marketing site for SPD Matrix, a pension 
 | `mock-timeline.html` | Standalone mockup of minutes analysis timeline. Used to generate `screenshots/timeline.png`. Not deployed. |
 | `mock-invoices.html` | Standalone mockup of invoice analysis dashboard (dark theme, Chart.js). Used to generate `screenshots/invoices.png`. Not deployed. |
 
-## Deploy
+## CI/CD & Deployment
+
+**GitHub repo**: `forayconsulting/syncrodocsystems_landing_page`
+
+**Automated (preferred):**
+- Push to `main` triggers `.github/workflows/deploy.yml`, which deploys to production via Wrangler.
+- PRs against `main` create preview deployments with unique URLs (e.g., `<hash>.syncrodoc-systems-homepage.pages.dev`). The preview URL is commented on the PR automatically.
+- Merging a PR triggers a production deploy.
+
+**Manual (escape hatch):**
 ```
 npx wrangler pages deploy . --project-name syncrodoc-systems-homepage
 ```
+
+**Cloudflare Pages project**: `syncrodoc-systems-homepage`
+- Production URL: `https://syncrodoc-systems-homepage.pages.dev`
+- Custom domains: `syncrodocsystems.com`, `www.syncrodocsystems.com`
+- Account: `clayton@foray-consulting.com` (ID: `9417d8e9fe191fdc397a487f65906962`)
+
+**GitHub Secrets** (required by the workflow):
+- `CLOUDFLARE_API_TOKEN`: Cloudflare API token with Workers/Pages edit permissions
+- `CLOUDFLARE_ACCOUNT_ID`: `9417d8e9fe191fdc397a487f65906962`
+
+**DNS**: Managed by Cloudflare. Nameservers (`sima.ns.cloudflare.com`, `yahir.ns.cloudflare.com`) configured in GoDaddy under Ricardo Govindasamy's account (Clayton has delegate access). Root domain uses a CNAME flattened to `syncrodoc-systems-homepage.pages.dev`.
 
 ## Conventions
 - No em dashes in any frontend copy
