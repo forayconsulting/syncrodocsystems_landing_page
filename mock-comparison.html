@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPD MATRIX — Cross-Plan Comparison</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-navy: #1e3a5f;
+      --brand-navy-light: #2d4a6f;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f7f9fc;
+      --bg-tertiary: #eef2f7;
+      --text-primary: #1a2b3c;
+      --text-secondary: #5a6b7c;
+      --text-muted: #8a9bac;
+      --border-subtle: rgba(30, 58, 95, 0.08);
+      --border-medium: rgba(30, 58, 95, 0.15);
+      --shadow-md: 0 4px 16px rgba(30, 58, 95, 0.12);
+      --gradient-primary: linear-gradient(135deg, #1e3a5f 0%, #2d4a6f 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      height: 100vh;
+      overflow: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 0% 0%, rgba(30,58,95,0.03) 0%, transparent 50%),
+                  radial-gradient(circle at 100% 100%, rgba(30,58,95,0.02) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Header */
+    .header {
+      padding: 16px 32px;
+      background: var(--gradient-primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-md);
+    }
+    .header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      color: white;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .header-buttons { display: flex; gap: 8px; }
+    .header-btn {
+      display: flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 10px;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Tabs */
+    .tabs-header {
+      display: flex;
+      border-bottom: 2px solid var(--border-medium);
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(12px);
+      padding: 0 32px;
+      gap: 8px;
+    }
+    .tab-button {
+      padding: 16px 24px;
+      background: none;
+      border: none;
+      border-bottom: 3px solid transparent;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .tab-button.active {
+      color: var(--brand-navy);
+      border-bottom-color: var(--brand-navy);
+    }
+
+    /* Table content */
+    .tab-content {
+      padding: 32px;
+      overflow-y: auto;
+      height: calc(100vh - 130px);
+    }
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--border-medium);
+    }
+    .output-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+    .export-button {
+      padding: 10px 20px;
+      background: var(--gradient-primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Comparison table */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--bg-primary);
+      border-radius: 12px;
+      box-shadow: var(--shadow-md);
+    }
+    .comparison-table thead {
+      background: var(--gradient-primary);
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .comparison-table th {
+      padding: 14px;
+      text-align: left;
+      font-weight: 700;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .comparison-table th:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .comparison-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      font-size: 13px;
+      vertical-align: top;
+      line-height: 1.5;
+    }
+    .comparison-table tbody tr:hover {
+      background: var(--bg-secondary);
+    }
+    .comparison-table td:first-child {
+      font-weight: 600;
+      color: var(--text-primary);
+      background: var(--bg-secondary);
+      position: sticky;
+      left: 0;
+      z-index: 5;
+      min-width: 180px;
+    }
+    .drag-handle {
+      color: var(--text-muted);
+      font-size: 12px;
+      letter-spacing: -2px;
+      padding-right: 6px;
+      opacity: 0.4;
+    }
+    .sort-indicator {
+      opacity: 0.3;
+      font-size: 10px;
+      margin-left: 4px;
+    }
+    .filter-btn {
+      position: absolute;
+      right: 6px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 22px;
+      height: 22px;
+      border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7);
+      cursor: pointer;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+    }
+    th { position: relative; padding-right: 36px !important; }
+    .citation {
+      color: var(--brand-navy);
+      background: rgba(30,58,95,0.06);
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      border-bottom: 1px dashed var(--brand-navy);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="7" height="7" rx="1"/>
+        <rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/>
+        <rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      SPD MATRIX
+    </h1>
+    <div class="header-buttons">
+      <button class="header-btn" title="History">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </button>
+      <button class="header-btn" title="Settings">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="tabs-header">
+    <button class="tab-button">Summary</button>
+    <button class="tab-button active">Comparison Spreadsheet</button>
+    <button class="tab-button">Citations</button>
+    <button class="tab-button" style="color: var(--text-muted);">Merge</button>
+  </div>
+
+  <div class="tab-content">
+    <div class="output-header">
+      <h2 class="output-title">Comparison Spreadsheet</h2>
+      <button class="export-button">Export &#9662;</button>
+    </div>
+
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th><span>Procedural Element</span><span class="sort-indicator">&#9650;</span><button class="filter-btn">&#9881;</button></th>
+          <th><span>Pacific Workers Plan</span><span class="sort-indicator">&#9650;</span><button class="filter-btn">&#9881;</button></th>
+          <th><span>Consolidated Trades Plan</span><span class="sort-indicator">&#9650;</span><button class="filter-btn">&#9881;</button></th>
+          <th><span>Northern Regional Trust</span><span class="sort-indicator">&#9650;</span><button class="filter-btn">&#9881;</button></th>
+          <th><span>Metro District Plan</span><span class="sort-indicator">&#9650;</span><button class="filter-btn">&#9881;</button></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Eligibility Requirements</td>
+          <td>Employees eligible after 12 months of continuous service with at least 1,000 hours worked. Part-time employees pro-rated. <span class="citation">p. 14, para. 3</span></td>
+          <td>Immediate eligibility for full-time employees upon hire date. Part-time employees eligible after 6 months. <span class="citation">p. 8, para. 1</span></td>
+          <td>Eligibility after completion of two consecutive plan years with 750+ hours each. Seasonal workers excluded. <span class="citation">p. 22, para. 5</span></td>
+          <td>All bargaining unit employees eligible on first day of employment. Apprentices eligible after completing probation. <span class="citation">p. 11, para. 2</span></td>
+        </tr>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Vesting Schedule</td>
+          <td>3-year cliff vesting. 100% vested after 36 months of credited service. <span class="citation">p. 18, para. 1</span></td>
+          <td>6-year graded vesting: 20% per year starting Year 2. <span class="citation">p. 12, para. 4</span></td>
+          <td>5-year cliff vesting. Break-in-service rules apply after 12 consecutive months of absence. <span class="citation">p. 26, para. 2</span></td>
+          <td>Immediate 100% vesting for all contributions. <span class="citation">p. 15, para. 6</span></td>
+        </tr>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Normal Retirement Age</td>
+          <td>Age 65, or age 62 with 30 years of service. <span class="citation">p. 31, para. 2</span></td>
+          <td>Age 65. No early retirement provision. <span class="citation">p. 19, para. 1</span></td>
+          <td>Age 65, or combined age plus service equals 85 ("Rule of 85"). <span class="citation">p. 34, para. 3</span></td>
+          <td>Age 62 with minimum 10 years of service. Age 65 without service requirement. <span class="citation">p. 24, para. 1</span></td>
+        </tr>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Claims Procedure</td>
+          <td>Written claims submitted to Plan Administrator within 180 days. Initial determination within 30 days, with one 15-day extension. <span class="citation">p. 42, para. 1</span></td>
+          <td>Claims filed with Board of Trustees. 45-day initial review period. Claimant notified by certified mail. <span class="citation">p. 28, para. 2</span></td>
+          <td>Claims submitted through employer HR office or directly to Fund office. 30-day determination. Incomplete claims tolled. <span class="citation">p. 48, para. 4</span></td>
+          <td>Electronic or written claims to Fund Office. 30-day determination period. Deemed denied if no response in 60 days. <span class="citation">p. 33, para. 3</span></td>
+        </tr>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Appeals Process</td>
+          <td>One level of appeal to Board of Trustees. Must be filed within 60 days of denial. Decision within 45 days. <span class="citation">p. 44, para. 3</span></td>
+          <td>Two-level appeal: first to Claims Committee, then to full Board. 60 days for each level. <span class="citation">p. 30, para. 1</span></td>
+          <td>Single appeal to Plan Administrator within 90 days. External review available for medical necessity determinations. <span class="citation">p. 51, para. 2</span></td>
+          <td>Appeal to Board of Trustees within 60 days. Claimant may appear in person or by representative. Decision final and binding. <span class="citation">p. 36, para. 5</span></td>
+        </tr>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Benefit Calculation</td>
+          <td>1.5% of final average compensation (highest 5 consecutive years) multiplied by years of credited service. <span class="citation">p. 35, para. 1</span></td>
+          <td>Flat dollar amount per year of service, currently $68.50/month per year. Updated annually by Board resolution. <span class="citation">p. 21, para. 3</span></td>
+          <td>2.0% of career average compensation multiplied by years of credited service, capped at 30 years. <span class="citation">p. 38, para. 2</span></td>
+          <td>1.75% of highest 3-year average compensation multiplied by years of service. No cap on years. <span class="citation">p. 27, para. 4</span></td>
+        </tr>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Survivor Benefits</td>
+          <td>Pre-retirement: 50% of accrued benefit paid as annuity to surviving spouse. Post-retirement: per elected form. <span class="citation">p. 38, para. 4</span></td>
+          <td>Qualified pre-retirement survivor annuity (QPSA) equal to 50% of vested benefit. Spouse consent required for waiver. <span class="citation">p. 24, para. 2</span></td>
+          <td>Lump sum death benefit of $5,000 plus monthly survivor annuity at 50% of participant's accrued benefit. <span class="citation">p. 41, para. 1</span></td>
+          <td>75% joint-and-survivor annuity default. Optional 50% or 100% elections available with actuarial adjustment. <span class="citation">p. 30, para. 2</span></td>
+        </tr>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>QDROs</td>
+          <td>Administered per ERISA Section 206(d). Separate interest method only. Alternate payee may elect immediate distribution if participant eligible. <span class="citation">p. 52, para. 1</span></td>
+          <td>Shared payment and separate interest both accepted. QDRO review fee of $500 charged to requesting party. <span class="citation">p. 35, para. 6</span></td>
+          <td>Separate interest method. Alternate payee benefits calculated as of participant's date of divorce. <span class="citation">p. 55, para. 3</span></td>
+          <td>Per ERISA. Board reviews QDROs within 18 business days. No review fee. Both methods accepted. <span class="citation">p. 40, para. 1</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>

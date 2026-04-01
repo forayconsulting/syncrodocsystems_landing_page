@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPD MATRIX — Minutes Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-navy: #1e3a5f;
+      --brand-navy-light: #2d4a6f;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f7f9fc;
+      --text-primary: #1a2b3c;
+      --text-secondary: #5a6b7c;
+      --text-muted: #8a9bac;
+      --border-subtle: rgba(30, 58, 95, 0.08);
+      --border-medium: rgba(30, 58, 95, 0.15);
+      --shadow-sm: 0 2px 8px rgba(30, 58, 95, 0.08);
+      --shadow-md: 0 4px 16px rgba(30, 58, 95, 0.12);
+      --shadow-lg: 0 8px 32px rgba(30, 58, 95, 0.16);
+      --gradient-primary: linear-gradient(135deg, #1e3a5f 0%, #2d4a6f 100%);
+      --accent-success: #0d6e6e;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      height: 100vh; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+
+    .header {
+      padding: 16px 32px;
+      background: var(--gradient-primary);
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: var(--shadow-md); flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px; font-weight: 700; color: white;
+      letter-spacing: -0.02em;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .header-buttons { display: flex; gap: 8px; }
+    .header-btn {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 10px; color: white; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* Output header */
+    .tl-output-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 12px 32px;
+      border-bottom: 1px solid var(--border-medium);
+      background: var(--bg-primary); flex-shrink: 0;
+    }
+    .tl-output-title-group { display: flex; align-items: baseline; gap: 16px; }
+    .tl-output-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; }
+    .tl-output-stats { display: flex; gap: 16px; font-size: 12px; color: var(--text-muted); }
+    .tl-output-stats span { color: var(--text-secondary); font-weight: 600; }
+    .tl-output-right { display: flex; align-items: center; gap: 12px; }
+    .tl-filters-toggle {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 16px; border-radius: 8px;
+      border: 1px solid var(--border-medium); background: var(--bg-primary);
+      color: var(--text-secondary); font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: 'Space Grotesk', sans-serif;
+    }
+    .tl-filter-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-width: 18px; height: 18px; border-radius: 9px;
+      background: var(--brand-navy); color: white;
+      font-size: 10px; font-weight: 700; padding: 0 5px;
+    }
+    .tl-zoom-controls {
+      display: flex; align-items: center; gap: 4px;
+    }
+    .tl-zoom-btn {
+      width: 28px; height: 28px; border-radius: 6px;
+      border: 1px solid var(--border-medium); background: var(--bg-primary);
+      color: var(--text-secondary); cursor: pointer; font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .tl-zoom-level { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; padding: 0 4px; }
+    .export-button {
+      padding: 8px 16px; background: var(--gradient-primary); color: white;
+      border: none; border-radius: 8px; font-size: 12px; font-weight: 600;
+      cursor: pointer; font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Active filter strip */
+    .tl-active-filter-strip {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 32px; background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-subtle); flex-shrink: 0;
+    }
+    .tl-active-dot { width: 10px; height: 10px; border-radius: 50%; background: #b45309; }
+    .tl-active-label { font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; color: #b45309; }
+    .tl-active-count { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+
+    /* Evolution strip */
+    .tl-evolution { display: flex; gap: 6px; flex: 1; overflow-x: auto; padding: 2px 0; }
+    .tl-evolution-step {
+      flex-shrink: 0; padding: 8px 12px;
+      background: var(--bg-primary); border: 1px solid var(--border-subtle);
+      border-radius: 6px; font-size: 10px; color: var(--text-secondary);
+      line-height: 1.4; max-width: 200px; cursor: pointer;
+    }
+    .tl-evolution-step.has-decision { border-left: 3px solid var(--accent-success); }
+    .tl-evolution-date { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--text-muted); margin-bottom: 2px; }
+    .tl-evolution-arrow { color: var(--border-medium); font-size: 12px; display: flex; align-items: center; flex-shrink: 0; }
+
+    .tl-clear-btn {
+      margin-left: auto; padding: 4px 12px;
+      border: 1px solid var(--border-medium); border-radius: 6px;
+      background: none; color: var(--text-muted); font-size: 11px; cursor: pointer;
+    }
+
+    /* Content row */
+    .tl-content-row { display: flex; flex: 1; min-height: 0; overflow: hidden; }
+
+    /* Timeline viewport */
+    .tl-viewport { flex: 1; overflow: auto; position: relative; cursor: grab; }
+    .tl-canvas { position: relative; min-height: 100%; padding: 20px 48px; display: flex; align-items: center; }
+    .tl-track { position: relative; width: 1400px; height: 400px; }
+    .tl-axis {
+      position: absolute; top: 50%; left: 0; right: 0;
+      height: 2px; background: var(--border-medium); transform: translateY(-50%);
+    }
+    .tl-axis::before, .tl-axis::after {
+      content: ''; position: absolute; top: 50%; transform: translateY(-50%);
+      width: 8px; height: 8px; border-radius: 50%; background: var(--border-medium);
+    }
+    .tl-axis::before { left: -4px; }
+    .tl-axis::after { right: -4px; }
+
+    /* Month markers */
+    .tl-month-marker {
+      position: absolute; bottom: calc(50% + 14px); transform: translateX(-50%);
+      font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px;
+      color: var(--text-muted); font-family: 'Space Grotesk', sans-serif; white-space: nowrap;
+    }
+    .tl-month-tick {
+      position: absolute; left: 50%; width: 1px; height: 10px;
+      background: var(--border-medium); bottom: -12px;
+    }
+
+    /* Meeting nodes */
+    .tl-meeting-node {
+      position: absolute; transform: translateX(-50%);
+      cursor: pointer; z-index: 2;
+    }
+    .tl-meeting-node.above { bottom: calc(50% + 6px); }
+    .tl-meeting-node.below { top: calc(50% + 6px); }
+    .tl-node-connector { width: 1px; background: var(--border-medium); margin: 0 auto; }
+    .tl-node-dot {
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--bg-primary); border: 2px solid var(--border-medium);
+      margin: 0 auto; position: relative; z-index: 3;
+    }
+    .tl-meeting-node.highlighted .tl-node-dot {
+      border-color: #b45309; background: #b45309;
+      box-shadow: 0 0 16px rgba(180, 83, 9, 0.4);
+      transform: scale(1.3);
+    }
+    .tl-meeting-node.highlighted .tl-node-connector { background: rgba(180, 83, 9, 0.3); width: 2px; }
+    .tl-meeting-node.dimmed { opacity: 0.2; }
+    .tl-meeting-node.selected .tl-node-dot {
+      border-color: var(--brand-navy); background: var(--brand-navy);
+      box-shadow: 0 0 20px rgba(30,58,95,0.35); transform: scale(1.5);
+    }
+
+    .tl-node-card {
+      background: var(--bg-primary); border: 1px solid var(--border-subtle);
+      border-radius: 10px; padding: 10px 14px; box-shadow: var(--shadow-sm);
+      width: 160px; text-align: center;
+    }
+    .tl-meeting-node.highlighted .tl-node-card {
+      border-color: #b45309; box-shadow: 0 2px 12px rgba(180,83,9,0.15);
+    }
+    .tl-meeting-node.selected .tl-node-card {
+      border-color: var(--brand-navy); box-shadow: var(--shadow-lg);
+      background: rgba(30,58,95,0.03);
+    }
+    .tl-node-title { font-size: 13px; font-weight: 600; color: var(--text-primary); line-height: 1.35; margin-bottom: 4px; }
+    .tl-node-date { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+    .tl-node-type { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 3px; }
+    .tl-node-blips { display: flex; gap: 3px; justify-content: center; margin: 4px auto; flex-wrap: wrap; max-width: 80px; }
+    .tl-topic-blip { width: 6px; height: 6px; border-radius: 50%; }
+
+    /* Thread lines */
+    .tl-thread-line {
+      position: absolute; height: 3px; border-radius: 1.5px;
+      top: 50%; transform: translateY(-50%); z-index: 1; opacity: 0.35;
+    }
+
+    /* Detail panel */
+    .tl-detail-panel {
+      width: 420px; border-left: 1px solid var(--border-medium);
+      background: var(--bg-primary); flex-shrink: 0;
+      display: flex; flex-direction: column; overflow: hidden;
+    }
+    .tl-detail-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      padding: 24px; border-bottom: 1px solid var(--border-subtle); flex-shrink: 0;
+    }
+    .tl-detail-title { font-family: 'Space Grotesk', sans-serif; font-size: 18px; font-weight: 700; }
+    .tl-detail-meta { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+    .tl-detail-close {
+      background: none; border: none; color: var(--text-muted); cursor: pointer;
+      font-size: 20px; padding: 4px 8px; border-radius: 6px; line-height: 1;
+    }
+    .tl-detail-body { flex: 1; overflow-y: auto; padding: 24px; }
+    .tl-detail-section { margin-bottom: 24px; }
+    .tl-detail-section-label {
+      font-size: 10px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--text-muted); margin-bottom: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .tl-detail-topics-list { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .tl-detail-topic-chip {
+      font-size: 11px; padding: 4px 10px; border-radius: 14px;
+      border: 1px solid; font-weight: 500;
+    }
+    .tl-excerpt-card {
+      background: var(--bg-secondary); border: 1px solid var(--border-subtle);
+      border-radius: 8px; padding: 16px; margin-bottom: 12px;
+      border-left: 3px solid var(--border-subtle);
+    }
+    .tl-excerpt-card.active-topic { border-left-color: #b45309; background: rgba(180,83,9,0.03); }
+    .tl-excerpt-topic-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+    .tl-excerpt-text { font-size: 13px; line-height: 1.7; color: var(--text-secondary); }
+    .tl-decision-tag {
+      display: inline-block; background: linear-gradient(135deg, #0d6e6e, #1a8a8a);
+      color: white; font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+      padding: 2px 8px; border-radius: 4px; margin-right: 6px; vertical-align: middle;
+    }
+    .tl-excerpt-citations {
+      margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--border-subtle);
+      display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+    }
+    .tl-citations-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-right: 2px; }
+    .tl-citation-link {
+      color: var(--brand-navy); background: rgba(30,58,95,0.06);
+      padding: 1px 6px; border-radius: 3px; font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      border-bottom: 1px dashed var(--brand-navy); white-space: nowrap; text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      SPD MATRIX
+    </h1>
+    <div class="header-buttons">
+      <button class="header-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+      <button class="header-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+    </div>
+  </div>
+
+  <!-- Output header bar -->
+  <div class="tl-output-header">
+    <div class="tl-output-title-group">
+      <h2 class="tl-output-title">Meeting Notes Timeline</h2>
+      <div class="tl-output-stats">
+        <span>8</span> meetings &middot; <span>6</span> topics &middot; <span>24</span> citations &middot; Jan 2023 &ndash; Dec 2025
+      </div>
+    </div>
+    <div class="tl-output-right">
+      <button class="tl-filters-toggle">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+        Topics
+        <span class="tl-filter-badge">1</span>
+      </button>
+      <div class="tl-zoom-controls">
+        <button class="tl-zoom-btn">&minus;</button>
+        <span class="tl-zoom-level">100%</span>
+        <button class="tl-zoom-btn">+</button>
+      </div>
+      <button class="export-button">Export &#9662;</button>
+    </div>
+  </div>
+
+  <!-- Active filter strip -->
+  <div class="tl-active-filter-strip">
+    <div class="tl-active-dot"></div>
+    <div class="tl-active-label">Investment Policy</div>
+    <div class="tl-active-count">5 mentions</div>
+    <div class="tl-evolution">
+      <div class="tl-evolution-step">
+        <div class="tl-evolution-date">Jan 2023</div>
+        Review of current asset allocation targets and manager performance
+      </div>
+      <div class="tl-evolution-arrow">&rarr;</div>
+      <div class="tl-evolution-step has-decision">
+        <div class="tl-evolution-date">Apr 2023</div>
+        Board approved shift to 60/40 equity-fixed split
+      </div>
+      <div class="tl-evolution-arrow">&rarr;</div>
+      <div class="tl-evolution-step">
+        <div class="tl-evolution-date">Oct 2023</div>
+        Discussion of alternative investment options for diversification
+      </div>
+      <div class="tl-evolution-arrow">&rarr;</div>
+      <div class="tl-evolution-step has-decision">
+        <div class="tl-evolution-date">Mar 2024</div>
+        Approved 5% allocation to real estate fund
+      </div>
+      <div class="tl-evolution-arrow">&rarr;</div>
+      <div class="tl-evolution-step">
+        <div class="tl-evolution-date">Sep 2025</div>
+        Annual IPS review; no changes recommended
+      </div>
+    </div>
+    <button class="tl-clear-btn">Clear filter</button>
+  </div>
+
+  <div class="tl-content-row">
+    <!-- Timeline viewport -->
+    <div class="tl-viewport">
+      <div class="tl-canvas">
+        <div class="tl-track">
+          <div class="tl-axis"></div>
+
+          <!-- Thread lines -->
+          <div class="tl-thread-line" style="left: 5%; width: 85%; background: #b45309; opacity: 0.25;"></div>
+
+          <!-- Month markers -->
+          <div class="tl-month-marker" style="left: 0%;"><span>Jan 2023</span><div class="tl-month-tick"></div></div>
+          <div class="tl-month-marker" style="left: 18%;"><span>Jul 2023</span><div class="tl-month-tick"></div></div>
+          <div class="tl-month-marker" style="left: 36%;"><span>Jan 2024</span><div class="tl-month-tick"></div></div>
+          <div class="tl-month-marker" style="left: 54%;"><span>Jul 2024</span><div class="tl-month-tick"></div></div>
+          <div class="tl-month-marker" style="left: 72%;"><span>Jan 2025</span><div class="tl-month-tick"></div></div>
+          <div class="tl-month-marker" style="left: 90%;"><span>Jul 2025</span><div class="tl-month-tick"></div></div>
+
+          <!-- Meeting nodes -->
+          <div class="tl-meeting-node above highlighted" style="left: 5%;">
+            <div class="tl-node-card">
+              <div class="tl-node-title">Q1 Board Meeting</div>
+              <div class="tl-node-date">Jan 18, 2023</div>
+              <div class="tl-node-type">Board Meeting</div>
+              <div class="tl-node-blips">
+                <div class="tl-topic-blip" style="background: #1e3a5f;"></div>
+                <div class="tl-topic-blip" style="background: #b45309;"></div>
+                <div class="tl-topic-blip" style="background: #0d6e6e;"></div>
+              </div>
+            </div>
+            <div class="tl-node-connector" style="height: 30px;"></div>
+            <div class="tl-node-dot"></div>
+          </div>
+
+          <div class="tl-meeting-node below highlighted" style="left: 22%;">
+            <div class="tl-node-dot"></div>
+            <div class="tl-node-connector" style="height: 30px;"></div>
+            <div class="tl-node-card">
+              <div class="tl-node-title">Q2 Board Meeting</div>
+              <div class="tl-node-date">Apr 12, 2023</div>
+              <div class="tl-node-type">Board Meeting</div>
+              <div class="tl-node-blips">
+                <div class="tl-topic-blip" style="background: #b45309;"></div>
+                <div class="tl-topic-blip" style="background: #b91c1c;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tl-meeting-node above dimmed" style="left: 35%;">
+            <div class="tl-node-card">
+              <div class="tl-node-title">Benefits Committee</div>
+              <div class="tl-node-date">Jul 8, 2023</div>
+              <div class="tl-node-type">Committee</div>
+              <div class="tl-node-blips">
+                <div class="tl-topic-blip" style="background: #6d28d9;"></div>
+                <div class="tl-topic-blip" style="background: #1e3a5f;"></div>
+              </div>
+            </div>
+            <div class="tl-node-connector" style="height: 30px;"></div>
+            <div class="tl-node-dot"></div>
+          </div>
+
+          <div class="tl-meeting-node below highlighted" style="left: 46%;">
+            <div class="tl-node-dot"></div>
+            <div class="tl-node-connector" style="height: 30px;"></div>
+            <div class="tl-node-card">
+              <div class="tl-node-title">Q4 Board Meeting</div>
+              <div class="tl-node-date">Oct 19, 2023</div>
+              <div class="tl-node-type">Board Meeting</div>
+              <div class="tl-node-blips">
+                <div class="tl-topic-blip" style="background: #b45309;"></div>
+                <div class="tl-topic-blip" style="background: #0d6e6e;"></div>
+                <div class="tl-topic-blip" style="background: #be185d;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tl-meeting-node above highlighted selected" style="left: 58%;">
+            <div class="tl-node-card">
+              <div class="tl-node-title">Q1 Board Meeting</div>
+              <div class="tl-node-date">Mar 14, 2024</div>
+              <div class="tl-node-type">Board Meeting</div>
+              <div class="tl-node-blips">
+                <div class="tl-topic-blip" style="background: #1e3a5f;"></div>
+                <div class="tl-topic-blip" style="background: #b45309;"></div>
+                <div class="tl-topic-blip" style="background: #b91c1c;"></div>
+                <div class="tl-topic-blip" style="background: #0d6e6e;"></div>
+              </div>
+            </div>
+            <div class="tl-node-connector" style="height: 30px;"></div>
+            <div class="tl-node-dot"></div>
+          </div>
+
+          <div class="tl-meeting-node below dimmed" style="left: 68%;">
+            <div class="tl-node-dot"></div>
+            <div class="tl-node-connector" style="height: 30px;"></div>
+            <div class="tl-node-card">
+              <div class="tl-node-title">Actuarial Review</div>
+              <div class="tl-node-date">Aug 5, 2024</div>
+              <div class="tl-node-type">Working Session</div>
+              <div class="tl-node-blips">
+                <div class="tl-topic-blip" style="background: #1e3a5f;"></div>
+                <div class="tl-topic-blip" style="background: #be185d;"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tl-meeting-node above dimmed" style="left: 78%;">
+            <div class="tl-node-card">
+              <div class="tl-node-title">Benefits Committee</div>
+              <div class="tl-node-date">Feb 11, 2025</div>
+              <div class="tl-node-type">Committee</div>
+              <div class="tl-node-blips">
+                <div class="tl-topic-blip" style="background: #6d28d9;"></div>
+              </div>
+            </div>
+            <div class="tl-node-connector" style="height: 30px;"></div>
+            <div class="tl-node-dot"></div>
+          </div>
+
+          <div class="tl-meeting-node below highlighted" style="left: 90%;">
+            <div class="tl-node-dot"></div>
+            <div class="tl-node-connector" style="height: 30px;"></div>
+            <div class="tl-node-card">
+              <div class="tl-node-title">Q3 Board Meeting</div>
+              <div class="tl-node-date">Sep 18, 2025</div>
+              <div class="tl-node-type">Board Meeting</div>
+              <div class="tl-node-blips">
+                <div class="tl-topic-blip" style="background: #b45309;"></div>
+                <div class="tl-topic-blip" style="background: #1e3a5f;"></div>
+                <div class="tl-topic-blip" style="background: #0d6e6e;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail panel -->
+    <div class="tl-detail-panel">
+      <div class="tl-detail-header">
+        <div>
+          <div class="tl-detail-title">Q1 Board Meeting</div>
+          <div class="tl-detail-meta">Mar 14, 2024 &middot; Board Meeting</div>
+        </div>
+        <button class="tl-detail-close">&times;</button>
+      </div>
+      <div class="tl-detail-body">
+        <div class="tl-detail-section">
+          <div class="tl-detail-section-label">Topics Discussed</div>
+          <div class="tl-detail-topics-list">
+            <span class="tl-detail-topic-chip" style="color: #1e3a5f; border-color: #1e3a5f; background: rgba(30,58,95,0.06);">Funding Status</span>
+            <span class="tl-detail-topic-chip" style="color: #b45309; border-color: #b45309; background: rgba(180,83,9,0.06);">Investment Policy</span>
+            <span class="tl-detail-topic-chip" style="color: #b91c1c; border-color: #b91c1c; background: rgba(185,28,28,0.06);">Vendor Selection</span>
+            <span class="tl-detail-topic-chip" style="color: #0d6e6e; border-color: #0d6e6e; background: rgba(13,110,110,0.06);">Plan Amendments</span>
+          </div>
+        </div>
+
+        <div class="tl-detail-section">
+          <div class="tl-detail-section-label">Excerpts</div>
+
+          <div class="tl-excerpt-card active-topic">
+            <div class="tl-excerpt-topic-label" style="color: #b45309;">Investment Policy</div>
+            <div class="tl-excerpt-text">
+              <span class="tl-decision-tag">DECISION</span>
+              Board voted unanimously to approve a 5% allocation to the Cornerstone Real Estate Fund III, reducing the domestic equity allocation from 45% to 40%. Motion by Trustee Rodriguez, seconded by Trustee Chen. Implementation to begin Q2 2024.
+            </div>
+            <div class="tl-excerpt-citations">
+              <span class="tl-citations-label">Sources</span>
+              <a class="tl-citation-link">Board_Minutes_Mar2024.pdf, p. 4</a>
+              <a class="tl-citation-link">Board_Minutes_Mar2024.pdf, p. 5</a>
+            </div>
+          </div>
+
+          <div class="tl-excerpt-card">
+            <div class="tl-excerpt-topic-label" style="color: #1e3a5f;">Funding Status</div>
+            <div class="tl-excerpt-text">
+              Actuary reported funded status at 87.3% as of January 1, 2024 valuation, up from 82.1% in prior year. Improvement attributed to strong equity returns and contribution discipline. Projected to reach 90% by 2026 under current assumptions.
+            </div>
+            <div class="tl-excerpt-citations">
+              <span class="tl-citations-label">Sources</span>
+              <a class="tl-citation-link">Board_Minutes_Mar2024.pdf, p. 2</a>
+            </div>
+          </div>
+
+          <div class="tl-excerpt-card">
+            <div class="tl-excerpt-topic-label" style="color: #b91c1c;">Vendor Selection</div>
+            <div class="tl-excerpt-text">
+              <span class="tl-decision-tag">DECISION</span>
+              Board authorized RFP for new third-party administrator. Current contract with PensionPro expires December 2024. Selection committee appointed: Trustees Chen, Williams, and Fund Counsel.
+            </div>
+            <div class="tl-excerpt-citations">
+              <span class="tl-citations-label">Sources</span>
+              <a class="tl-citation-link">Board_Minutes_Mar2024.pdf, p. 7</a>
+            </div>
+          </div>
+
+          <div class="tl-excerpt-card">
+            <div class="tl-excerpt-topic-label" style="color: #0d6e6e;">Plan Amendments</div>
+            <div class="tl-excerpt-text">
+              Counsel presented draft SMM #3 incorporating early retirement provisions and updated disability pension language. Board directed counsel to circulate to bargaining units for review before adoption at next quarterly meeting.
+            </div>
+            <div class="tl-excerpt-citations">
+              <span class="tl-citations-label">Sources</span>
+              <a class="tl-citation-link">Board_Minutes_Mar2024.pdf, p. 9</a>
+              <a class="tl-citation-link">Board_Minutes_Mar2024.pdf, p. 10</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

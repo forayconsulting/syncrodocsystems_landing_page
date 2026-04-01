@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SyncroDoc Systems</title>
+  <meta name="description" content="Structured analysis of pension plan documents with exact page citations. Built for legal teams and fund administrators.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="wordmark">SyncroDoc Systems</a>
+      <button class="login-btn" id="loginBtn">Login</button>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <span class="label">Pension Document Analysis</span>
+        <h1>
+          <span class="tagline-top">
+            <span class="counter-word" data-type="plans"><span class="counter-num"></span>Plan docs</span>.
+            <span class="counter-word" data-type="amendments"><span class="counter-num"></span>Amendments</span>.
+            <br>
+            <span class="counter-word" data-type="minutes"><span class="counter-num"></span>Minutes</span>.
+            <span class="counter-word" data-type="invoices"><span class="counter-num"></span>Invoices</span>.
+          </span>
+          <br><span class="tagline-bottom">One place to make sense of it all.</span>
+        </h1>
+        <p class="hero-sub">SPD Matrix produces structured analysis of pension plan documents with exact page citations. Built for legal teams and fund administrators managing plan complexity.</p>
+      </div>
+      <div class="hero-decoration" aria-hidden="true">
+        <div class="deco-shadow"></div>
+        <div class="deco-frame">
+          <svg class="scribble-lines" viewBox="0 0 180 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path class="scribble scribble-1" d="M20 35 C35 32, 42 38, 55 34 C68 30, 78 36, 95 33 C112 30, 125 35, 140 32 C148 31, 155 34, 162 33" stroke="var(--rule)" stroke-width="1.2" stroke-linecap="round"/>
+            <path class="scribble scribble-2" d="M18 52 C30 55, 48 48, 65 51 C82 54, 95 49, 110 52 C125 55, 138 50, 155 52" stroke="var(--rule)" stroke-width="1.2" stroke-linecap="round"/>
+            <path class="scribble scribble-3" d="M22 70 C38 67, 50 73, 70 69 C90 65, 105 72, 120 68 C135 64, 148 70, 158 68" stroke="var(--rule)" stroke-width="1.2" stroke-linecap="round"/>
+            <path class="scribble scribble-4" d="M20 88 C32 91, 45 85, 62 89 C79 93, 98 86, 115 90 C132 94, 145 88, 160 90" stroke="var(--rule)" stroke-width="1.2" stroke-linecap="round"/>
+            <path class="scribble scribble-5" d="M24 108 C40 105, 55 111, 72 107 C89 103, 100 110, 118 106 C136 102, 148 108, 156 106" stroke="var(--rule)" stroke-width="1.2" stroke-linecap="round"/>
+            <path class="scribble scribble-6" d="M19 126 C34 129, 52 123, 68 127 C84 131, 100 124, 115 128 C130 132, 142 126, 160 128" stroke="var(--rule)" stroke-width="1.2" stroke-linecap="round"/>
+            <path class="scribble scribble-7" d="M22 145 C36 142, 50 148, 65 144 C80 140, 95 147, 112 143 C129 139, 140 145, 155 143" stroke="var(--rule)" stroke-width="1.2" stroke-linecap="round"/>
+            <path class="scribble scribble-short-1" d="M20 165 C32 168, 48 162, 62 166 C76 170, 88 164, 95 166" stroke="var(--rule)" stroke-width="1.2" stroke-linecap="round"/>
+            <path class="scribble scribble-short-2" d="M20 183 C35 180, 50 186, 68 182 C86 178, 100 184, 118 181" stroke="var(--rule)" stroke-width="1.2" stroke-linecap="round"/>
+            <!-- Red pen edits -->
+            <line class="edit-mark edit-strikethrough-1" x1="58" y1="53" x2="130" y2="51" stroke="#c0392b" stroke-width="0.8" stroke-linecap="round"/>
+            <path class="edit-mark edit-circle-1" d="M22 84 C18 78, 28 72, 38 76 C48 80, 48 92, 38 96 C28 100, 16 94, 22 84Z" stroke="#c0392b" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+            <path class="edit-mark edit-caret-1" d="M100 100 L106 94 L112 100" stroke="#c0392b" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+            <!-- Blue pen edits -->
+            <path class="edit-mark edit-x-1" d="M135 126 L143 134 M143 126 L135 134" stroke="#2856a3" stroke-width="0.7" stroke-linecap="round"/>
+            <path class="edit-mark edit-bracket-1" d="M14 140 C10 140, 10 156, 14 156" stroke="#2856a3" stroke-width="0.7" fill="none" stroke-linecap="round"/>
+            <line class="edit-mark edit-strikethrough-2" x1="30" y1="165" x2="88" y2="166" stroke="#2856a3" stroke-width="0.7" stroke-linecap="round"/>
+            <path class="edit-mark edit-check-1" d="M148 68 L152 74 L162 60" stroke="#c0392b" stroke-width="0.8" fill="none" stroke-linecap="round"/>
+            <path class="edit-mark edit-squiggle-1" d="M60 200 C64 196, 68 204, 72 200 C76 196, 80 204, 84 200" stroke="#2856a3" stroke-width="0.6" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="deco-line"></div>
+        <div class="deco-dot"></div>
+      </div>
+    </div>
+  </header>
+
+  <div class="divider-rule">
+    <div class="divider-inner">
+      <span class="divider-text">What we solve</span>
+    </div>
+  </div>
+
+  <section class="problems" id="problems">
+
+    <article class="accordion" data-accordion>
+      <button class="accordion-header" aria-expanded="true">
+        <div class="accordion-meta">
+          <span class="accordion-number">01</span>
+          <div class="accordion-title-group">
+            <h2 class="accordion-title">Post-merger plan consolidation</h2>
+            <p class="accordion-brief">Multiple plans, hundreds of pages each, differences buried in paragraph-level detail.</p>
+          </div>
+        </div>
+        <span class="accordion-icon" aria-hidden="true"></span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="accordion-text">
+            <p>After a merger, you inherit plans. Sometimes five. Sometimes fifteen. Each with its own governing language on claims, appeals, vesting, eligibility, and more. Finding where plans agree and where they conflict requires reading every page of every document.</p>
+            <p>SPD Matrix compares plans side by side, extracts the governing language for each provision, and cites the exact page and paragraph. A comparison that used to take weeks takes minutes.</p>
+          </div>
+          <div class="accordion-media">
+            <img src="screenshots/comparison.png" alt="Cross-Plan Comparison view" class="screenshot" data-lightbox>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="accordion" data-accordion>
+      <button class="accordion-header" aria-expanded="false">
+        <div class="accordion-meta">
+          <span class="accordion-number">02</span>
+          <div class="accordion-title-group">
+            <h2 class="accordion-title">Amendment tracking</h2>
+            <p class="accordion-brief">Amendments stack up. The current state of any provision gets harder to find.</p>
+          </div>
+        </div>
+        <span class="accordion-icon" aria-hidden="true"></span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="accordion-text">
+            <p>A plan changes over time through Summaries of Material Modifications. Each SMM overrides specific provisions in the base document, but the base document itself does not change. Tracking what was modified, what was superseded, and what still stands requires reading every document in sequence.</p>
+            <p>SPD Matrix maps amendments chronologically against the base plan, shows the status of each provision, and can generate a consolidated, current-state SPD with full citation trails.</p>
+          </div>
+          <div class="accordion-media">
+            <img src="screenshots/amendments.png" alt="Amendment Tracking view" class="screenshot" data-lightbox>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="accordion" data-accordion>
+      <button class="accordion-header" aria-expanded="false">
+        <div class="accordion-meta">
+          <span class="accordion-number">03</span>
+          <div class="accordion-title-group">
+            <h2 class="accordion-title">Decision archaeology</h2>
+            <p class="accordion-brief">Years of board minutes. Decisions buried across hundreds of pages.</p>
+          </div>
+        </div>
+        <span class="accordion-icon" aria-hidden="true"></span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="accordion-text">
+            <p>The rationale behind plan decisions lives in meeting minutes, committee notes, and working session records. When a question comes up about why a provision was adopted or when a fee was approved, the answer is somewhere in a decade of documentation.</p>
+            <p>SPD Matrix extracts decisions from meeting records, organizes them by topic, and presents them on an interactive timeline. Filter by subject, trace decision threads across meetings, and export topic-focused reports.</p>
+          </div>
+          <div class="accordion-media">
+            <img src="screenshots/timeline.png" alt="Minutes Analysis timeline view" class="screenshot" data-lightbox>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <article class="accordion" data-accordion>
+      <button class="accordion-header" aria-expanded="false">
+        <div class="accordion-meta">
+          <span class="accordion-number">04</span>
+          <div class="accordion-title-group">
+            <h2 class="accordion-title">Fee and invoice analysis</h2>
+            <p class="accordion-brief">Vendor invoices in different formats. Cost visibility requires manual tabulation.</p>
+          </div>
+        </div>
+        <span class="accordion-icon" aria-hidden="true"></span>
+      </button>
+      <div class="accordion-body">
+        <div class="accordion-body-inner">
+          <div class="accordion-text">
+            <p>Invoices, billing statements, and fee schedules arrive from different vendors in different formats. Understanding cost trends, comparing vendor fees, and preparing cost reports means manual data entry and spreadsheet work.</p>
+            <p>SPD Matrix extracts cost data from uploaded documents, visualizes spending by vendor and category, and exports structured reports in Excel, Word, or PDF.</p>
+          </div>
+          <div class="accordion-media">
+            <img src="screenshots/invoices.png" alt="Invoice Analysis dashboard view" class="screenshot" data-lightbox>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="closing">
+    <div class="closing-inner">
+      <h2 class="closing-headline">Document work that used to take weeks.</h2>
+      <p class="closing-sub">If your team manages pension plan complexity, SPD Matrix was built for the way you actually work.</p>
+      <a href="#" class="closing-cta" id="requestAccessBtn">Request Access</a>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="footer-wordmark">SyncroDoc Systems</span>
+      <span class="footer-copy">&copy; 2026</span>
+    </div>
+  </footer>
+
+  <div class="login-modal" id="loginModal" aria-hidden="true">
+    <div class="login-modal-backdrop" data-close-modal></div>
+    <div class="login-modal-content">
+      <button class="login-modal-close" data-close-modal aria-label="Close">&times;</button>
+      <h3>Login</h3>
+      <p>Client login portal coming soon. Your team will be routed to the correct instance automatically.</p>
+      <p class="login-modal-contact">For access, contact your account administrator.</p>
+    </div>
+  </div>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true">
+    <div class="lightbox-backdrop" data-close-lightbox></div>
+    <div class="lightbox-content">
+      <button class="lightbox-close" data-close-lightbox aria-label="Close">&times;</button>
+      <img class="lightbox-img" id="lightboxImg" src="" alt="">
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

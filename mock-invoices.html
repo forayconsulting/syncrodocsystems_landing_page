@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPD MATRIX — Invoice Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --brand-navy: #1e3a5f;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f7f9fc;
+      --text-primary: #1a2b3c;
+      --text-secondary: #5a6b7c;
+      --text-muted: #8a9bac;
+      --border-subtle: rgba(30, 58, 95, 0.08);
+      --border-medium: rgba(30, 58, 95, 0.15);
+      --shadow-md: 0 4px 16px rgba(30, 58, 95, 0.12);
+      --gradient-primary: linear-gradient(135deg, #1e3a5f 0%, #2d4a6f 100%);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #111827;
+      color: #e0e0e0;
+      height: 100vh; overflow: hidden;
+      display: flex; flex-direction: column;
+    }
+
+    .header {
+      padding: 16px 32px;
+      background: var(--gradient-primary);
+      display: flex; justify-content: space-between; align-items: center;
+      box-shadow: var(--shadow-md); flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px; font-weight: 700; color: white;
+      letter-spacing: -0.02em;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .header-buttons { display: flex; gap: 8px; }
+    .header-btn {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 10px; color: white; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .inv-workspace {
+      display: flex; flex-direction: column; gap: 12px;
+      padding: 16px 24px; flex: 1; overflow-y: auto;
+    }
+    .inv-header { display: flex; align-items: baseline; gap: 16px; }
+    .inv-title { font-size: 20px; font-weight: 600; color: #e0e0e0; }
+    .inv-date-span { font-size: 13px; color: #888; }
+
+    .inv-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+    .inv-stat-card {
+      flex: 1 1 120px; min-width: 100px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px; padding: 10px 12px;
+    }
+    .inv-stat-primary { border-color: rgba(100,140,255,0.2); background: rgba(100,140,255,0.06); }
+    .inv-stat-value { font-size: 18px; font-weight: 700; color: #e0e0e0; letter-spacing: -0.5px; }
+    .inv-stat-label { font-size: 11px; color: #999; margin-top: 1px; }
+    .inv-stat-sub { font-size: 10px; color: #666; margin-top: 1px; }
+
+    .inv-summary {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px; overflow: hidden;
+    }
+    .inv-summary-toggle {
+      padding: 10px 14px; font-size: 12px; font-weight: 600;
+      color: #aaa; text-transform: uppercase; letter-spacing: 0.5px;
+      cursor: pointer; list-style: none;
+    }
+    .inv-summary-toggle::-webkit-details-marker { display: none; }
+    .inv-summary-toggle::before { content: '\25B6  '; font-size: 10px; display: inline-block; }
+    details[open] > .inv-summary-toggle::before { transform: rotate(90deg); }
+    .inv-summary-content { padding: 0 14px 12px; font-size: 13px; line-height: 1.6; color: #ccc; }
+    .inv-summary-content p { margin: 0 0 8px; }
+
+    .inv-filter-bar { display: flex; gap: 6px; flex-wrap: wrap; }
+    .inv-filter-pill {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px; padding: 4px 14px;
+      font-size: 12px; color: #999; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+    }
+    .inv-filter-pill.active {
+      background: rgba(100,140,255,0.15);
+      border-color: rgba(100,140,255,0.3);
+      color: #8ab4ff;
+    }
+
+    .inv-main { display: grid; grid-template-columns: 1fr 300px; gap: 10px; min-height: 300px; }
+    .inv-chart-container {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px; padding: 10px; position: relative;
+    }
+    .inv-detail-panel {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 8px; padding: 10px;
+      overflow-y: auto; max-height: 380px;
+    }
+    .inv-detail-title {
+      font-size: 13px; font-weight: 600; color: #aaa;
+      text-transform: uppercase; letter-spacing: 0.5px; margin: 0 0 10px;
+    }
+    .inv-category-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
+    .inv-category-row:last-child { border-bottom: none; }
+    .inv-category-header {
+      display: flex; align-items: center; gap: 8px;
+      padding: 8px 4px; cursor: pointer;
+    }
+    .inv-category-header:hover { background: rgba(255,255,255,0.04); }
+    .inv-category-color { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
+    .inv-category-name { flex: 1; font-size: 13px; color: #ccc; }
+    .inv-category-amount { font-size: 13px; font-weight: 600; color: #e0e0e0; font-variant-numeric: tabular-nums; }
+    .inv-category-pct { font-size: 11px; color: #888; width: 40px; text-align: right; }
+    .inv-category-chevron { font-size: 10px; color: #666; width: 14px; text-align: center; }
+    .inv-category-detail { padding: 4px 4px 10px 22px; display: none; }
+    .inv-category-detail.open { display: block; }
+    .inv-vendor-row { display: flex; justify-content: space-between; padding: 3px 0; }
+    .inv-vendor-name { font-size: 12px; color: #aaa; }
+    .inv-vendor-amount { font-size: 12px; color: #999; font-variant-numeric: tabular-nums; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      SPD MATRIX
+    </h1>
+    <div class="header-buttons">
+      <button class="header-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+      <button class="header-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+    </div>
+  </div>
+
+  <div class="inv-workspace">
+    <div class="inv-header">
+      <h2 class="inv-title">Invoice Analysis</h2>
+      <div class="inv-date-span">Q1 2024 &ndash; Q4 2025</div>
+    </div>
+
+    <div class="inv-stats">
+      <div class="inv-stat-card inv-stat-primary">
+        <div class="inv-stat-value">$1,247,850</div>
+        <div class="inv-stat-label">Total Spend</div>
+        <div class="inv-stat-sub">4,218.5 hrs &middot; 8 periods</div>
+      </div>
+      <div class="inv-stat-card">
+        <div class="inv-stat-value">$486,200</div>
+        <div class="inv-stat-label">Grant &amp; Associates LLP</div>
+        <div class="inv-stat-sub">1,842.0 hrs</div>
+      </div>
+      <div class="inv-stat-card">
+        <div class="inv-stat-value">$412,750</div>
+        <div class="inv-stat-label">Meridian Actuarial</div>
+        <div class="inv-stat-sub">1,126.5 hrs</div>
+      </div>
+      <div class="inv-stat-card">
+        <div class="inv-stat-value">$348,900</div>
+        <div class="inv-stat-label">Bridgepoint Advisory</div>
+        <div class="inv-stat-sub">1,250.0 hrs</div>
+      </div>
+    </div>
+
+    <details class="inv-summary" open>
+      <summary class="inv-summary-toggle">Document Overview</summary>
+      <div class="inv-summary-content">
+        <p>Analysis covers 24 invoices from three service providers over eight quarterly billing periods. Grant &amp; Associates LLP provides legal counsel for plan administration, compliance, and litigation support. Meridian Actuarial performs annual valuations, experience studies, and ad hoc projections. Bridgepoint Advisory provides investment consulting and manager search services.</p>
+        <p>Total fees represent a 12% increase over the prior two-year period, driven primarily by increased litigation support costs related to the a pending participant matter matter and a comprehensive experience study completed in Q3 2024.</p>
+      </div>
+    </details>
+
+    <div class="inv-filter-bar">
+      <button class="inv-filter-pill active">All</button>
+      <button class="inv-filter-pill">Grant &amp; Associates</button>
+      <button class="inv-filter-pill">Meridian Actuarial</button>
+      <button class="inv-filter-pill">Bridgepoint Advisory</button>
+    </div>
+
+    <div class="inv-main">
+      <div class="inv-chart-container">
+        <canvas id="inv-chart"></canvas>
+      </div>
+      <div class="inv-detail-panel">
+        <h3 class="inv-detail-title">Cost Categories</h3>
+
+        <div class="inv-category-row">
+          <div class="inv-category-header" onclick="this.nextElementSibling.classList.toggle('open')">
+            <div class="inv-category-color" style="background: #1e3a5f;"></div>
+            <div class="inv-category-name">Plan Administration</div>
+            <div class="inv-category-amount">$342,100</div>
+            <div class="inv-category-pct">27.4%</div>
+            <div class="inv-category-chevron">&#9656;</div>
+          </div>
+          <div class="inv-category-detail">
+            <div class="inv-vendor-row"><span class="inv-vendor-name">Grant &amp; Associates LLP</span><span class="inv-vendor-amount">$248,600</span></div>
+            <div class="inv-vendor-row"><span class="inv-vendor-name">Meridian Actuarial</span><span class="inv-vendor-amount">$93,500</span></div>
+          </div>
+        </div>
+
+        <div class="inv-category-row">
+          <div class="inv-category-header" onclick="this.nextElementSibling.classList.toggle('open')">
+            <div class="inv-category-color" style="background: #b45309;"></div>
+            <div class="inv-category-name">Actuarial Services</div>
+            <div class="inv-category-amount">$298,450</div>
+            <div class="inv-category-pct">23.9%</div>
+            <div class="inv-category-chevron">&#9656;</div>
+          </div>
+          <div class="inv-category-detail">
+            <div class="inv-vendor-row"><span class="inv-vendor-name">Meridian Actuarial</span><span class="inv-vendor-amount">$298,450</span></div>
+          </div>
+        </div>
+
+        <div class="inv-category-row">
+          <div class="inv-category-header" onclick="this.nextElementSibling.classList.toggle('open')">
+            <div class="inv-category-color" style="background: #0d6e6e;"></div>
+            <div class="inv-category-name">Investment Consulting</div>
+            <div class="inv-category-amount">$268,400</div>
+            <div class="inv-category-pct">21.5%</div>
+            <div class="inv-category-chevron">&#9656;</div>
+          </div>
+          <div class="inv-category-detail">
+            <div class="inv-vendor-row"><span class="inv-vendor-name">Bridgepoint Advisory</span><span class="inv-vendor-amount">$268,400</span></div>
+          </div>
+        </div>
+
+        <div class="inv-category-row">
+          <div class="inv-category-header" onclick="this.nextElementSibling.classList.toggle('open')">
+            <div class="inv-category-color" style="background: #b91c1c;"></div>
+            <div class="inv-category-name">Litigation Support</div>
+            <div class="inv-category-amount">$186,200</div>
+            <div class="inv-category-pct">14.9%</div>
+            <div class="inv-category-chevron">&#9656;</div>
+          </div>
+          <div class="inv-category-detail">
+            <div class="inv-vendor-row"><span class="inv-vendor-name">Grant &amp; Associates LLP</span><span class="inv-vendor-amount">$186,200</span></div>
+          </div>
+        </div>
+
+        <div class="inv-category-row">
+          <div class="inv-category-header" onclick="this.nextElementSibling.classList.toggle('open')">
+            <div class="inv-category-color" style="background: #6d28d9;"></div>
+            <div class="inv-category-name">Compliance &amp; Reporting</div>
+            <div class="inv-category-amount">$82,200</div>
+            <div class="inv-category-pct">6.6%</div>
+            <div class="inv-category-chevron">&#9656;</div>
+          </div>
+          <div class="inv-category-detail">
+            <div class="inv-vendor-row"><span class="inv-vendor-name">Grant &amp; Associates LLP</span><span class="inv-vendor-amount">$51,400</span></div>
+            <div class="inv-vendor-row"><span class="inv-vendor-name">Meridian Actuarial</span><span class="inv-vendor-amount">$20,800</span></div>
+            <div class="inv-vendor-row"><span class="inv-vendor-name">Bridgepoint Advisory</span><span class="inv-vendor-amount">$10,000</span></div>
+          </div>
+        </div>
+
+        <div class="inv-category-row">
+          <div class="inv-category-header" onclick="this.nextElementSibling.classList.toggle('open')">
+            <div class="inv-category-color" style="background: #be185d;"></div>
+            <div class="inv-category-name">Manager Search</div>
+            <div class="inv-category-amount">$70,500</div>
+            <div class="inv-category-pct">5.6%</div>
+            <div class="inv-category-chevron">&#9656;</div>
+          </div>
+          <div class="inv-category-detail">
+            <div class="inv-vendor-row"><span class="inv-vendor-name">Bridgepoint Advisory</span><span class="inv-vendor-amount">$70,500</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var ctx = document.getElementById('inv-chart').getContext('2d');
+
+    var labels = ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025'];
+
+    var datasets = [
+      { label: 'Plan Administration', data: [38000, 42000, 44500, 41200, 43800, 45100, 42500, 45000], backgroundColor: '#1e3a5f' },
+      { label: 'Actuarial Services', data: [28000, 32000, 52000, 34000, 30000, 38000, 48000, 36450], backgroundColor: '#b45309' },
+      { label: 'Investment Consulting', data: [32000, 34000, 30500, 35000, 33000, 36000, 31500, 36400], backgroundColor: '#0d6e6e' },
+      { label: 'Litigation Support', data: [12000, 18000, 28000, 32000, 26000, 24000, 22200, 24000], backgroundColor: '#b91c1c' },
+      { label: 'Compliance & Reporting', data: [8000, 10000, 12000, 9500, 10500, 11000, 10200, 11000], backgroundColor: '#6d28d9' },
+      { label: 'Manager Search', data: [0, 0, 15000, 18000, 12500, 10000, 8000, 7000], backgroundColor: '#be185d' }
+    ];
+
+    new Chart(ctx, {
+      type: 'bar',
+      data: { labels: labels, datasets: datasets },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                return context.dataset.label + ': $' + context.raw.toLocaleString();
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            stacked: true,
+            ticks: { color: '#888', font: { size: 11 } },
+            grid: { color: 'rgba(255,255,255,0.04)' }
+          },
+          y: {
+            stacked: true,
+            ticks: {
+              color: '#888',
+              font: { size: 11 },
+              callback: function(value) {
+                if (value >= 1000) return '$' + (value / 1000) + 'k';
+                return '$' + value;
+              }
+            },
+            grid: { color: 'rgba(255,255,255,0.04)' }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

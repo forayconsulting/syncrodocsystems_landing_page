@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPD MATRIX — Amendment Tracking</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --brand-navy: #1e3a5f;
+      --brand-navy-light: #2d4a6f;
+      --bg-primary: #ffffff;
+      --bg-secondary: #f7f9fc;
+      --bg-tertiary: #eef2f7;
+      --text-primary: #1a2b3c;
+      --text-secondary: #5a6b7c;
+      --text-muted: #8a9bac;
+      --border-subtle: rgba(30, 58, 95, 0.08);
+      --border-medium: rgba(30, 58, 95, 0.15);
+      --shadow-md: 0 4px 16px rgba(30, 58, 95, 0.12);
+      --gradient-primary: linear-gradient(135deg, #1e3a5f 0%, #2d4a6f 100%);
+      --accent-success: #0d6e6e;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      height: 100vh;
+      overflow: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(circle at 0% 0%, rgba(30,58,95,0.03) 0%, transparent 50%),
+                  radial-gradient(circle at 100% 100%, rgba(30,58,95,0.02) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .header {
+      padding: 16px 32px;
+      background: var(--gradient-primary);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-md);
+    }
+    .header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px; font-weight: 700; color: white;
+      letter-spacing: -0.02em;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .header-buttons { display: flex; gap: 8px; }
+    .header-btn {
+      width: 40px; height: 40px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 10px; color: white; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .tabs-header {
+      display: flex;
+      border-bottom: 2px solid var(--border-medium);
+      background: rgba(255,255,255,0.88);
+      backdrop-filter: blur(12px);
+      padding: 0 32px; gap: 8px;
+    }
+    .tab-button {
+      padding: 16px 24px; background: none; border: none;
+      border-bottom: 3px solid transparent;
+      font-size: 14px; font-weight: 600; color: var(--text-secondary);
+      cursor: pointer; font-family: 'Space Grotesk', sans-serif;
+    }
+    .tab-button.active { color: var(--brand-navy); border-bottom-color: var(--brand-navy); }
+
+    .tab-content { padding: 32px; overflow-y: auto; height: calc(100vh - 130px); }
+    .output-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 24px; padding-bottom: 16px;
+      border-bottom: 2px solid var(--border-medium);
+    }
+    .output-title { font-family: 'Space Grotesk', sans-serif; font-size: 20px; font-weight: 700; }
+    .export-button {
+      padding: 10px 20px; background: var(--gradient-primary); color: white;
+      border: none; border-radius: 8px; font-size: 13px; font-weight: 600;
+      cursor: pointer; font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .comparison-table {
+      width: 100%; border-collapse: collapse;
+      background: var(--bg-primary); border-radius: 12px; box-shadow: var(--shadow-md);
+    }
+    .comparison-table thead { background: var(--gradient-primary); color: white; position: sticky; top: 0; z-index: 10; }
+    .comparison-table th {
+      padding: 14px; text-align: left; font-weight: 700; font-size: 13px;
+      text-transform: uppercase; letter-spacing: 0.5px; position: relative; padding-right: 36px;
+    }
+    .comparison-table th:hover { background: rgba(255,255,255,0.1); }
+    .comparison-table td {
+      padding: 12px 14px; border-bottom: 1px solid var(--border-subtle);
+      font-size: 13px; vertical-align: top; line-height: 1.5;
+    }
+    .comparison-table tbody tr:hover { background: var(--bg-secondary); }
+    .comparison-table td:first-child {
+      font-weight: 600; background: var(--bg-secondary);
+      position: sticky; left: 0; z-index: 5; min-width: 180px;
+    }
+    .drag-handle { color: var(--text-muted); font-size: 12px; letter-spacing: -2px; padding-right: 6px; opacity: 0.4; }
+    .sort-indicator { opacity: 0.3; font-size: 10px; margin-left: 4px; }
+    .filter-btn {
+      position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+      width: 22px; height: 22px; border: 1px solid rgba(255,255,255,0.3);
+      background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.7);
+      cursor: pointer; border-radius: 4px;
+      display: flex; align-items: center; justify-content: center; font-size: 11px;
+    }
+    .citation {
+      color: var(--brand-navy); background: rgba(30,58,95,0.06);
+      padding: 1px 5px; border-radius: 3px; font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      border-bottom: 1px dashed var(--brand-navy); white-space: nowrap;
+    }
+    .status-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 2px 8px; border-radius: 4px; margin-bottom: 4px;
+    }
+    .status-unchanged { background: rgba(30,58,95,0.08); color: var(--text-secondary); }
+    .status-modified { background: rgba(194,73,29,0.12); color: #C2491D; }
+    .status-added { background: rgba(13,110,110,0.12); color: var(--accent-success); }
+    .status-superseded { background: rgba(139,69,19,0.12); color: #8B4513; }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+      </svg>
+      SPD MATRIX
+    </h1>
+    <div class="header-buttons">
+      <button class="header-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></button>
+      <button class="header-btn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+    </div>
+  </div>
+
+  <div class="tabs-header">
+    <button class="tab-button">Summary</button>
+    <button class="tab-button active">Comparison Spreadsheet</button>
+    <button class="tab-button">Citations</button>
+    <button class="tab-button" style="color: var(--text-muted);">Merge</button>
+  </div>
+
+  <div class="tab-content">
+    <div class="output-header">
+      <h2 class="output-title">Amendment Tracking: Consolidated Trades Pension Plan</h2>
+      <button class="export-button">Export &#9662;</button>
+    </div>
+
+    <table class="comparison-table">
+      <thead>
+        <tr>
+          <th><span>Provision</span><span class="sort-indicator">&#9650;</span><button class="filter-btn">&#9881;</button></th>
+          <th><span>Original SPD (2018)</span><span class="sort-indicator">&#9650;</span><button class="filter-btn">&#9881;</button></th>
+          <th><span>SMM #1 (Jan 2020)</span><span class="sort-indicator">&#9650;</span><button class="filter-btn">&#9881;</button></th>
+          <th><span>SMM #2 (Jul 2021)</span><span class="sort-indicator">&#9650;</span><button class="filter-btn">&#9881;</button></th>
+          <th><span>SMM #3 (Mar 2024)</span><span class="sort-indicator">&#9650;</span><button class="filter-btn">&#9881;</button></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Eligibility Requirements</td>
+          <td><span class="status-badge status-superseded">Superseded</span><br>Employees eligible after 12 months of continuous service with 1,000+ hours. <span class="citation">p. 8, para. 1</span></td>
+          <td><span class="status-badge status-modified">Modified</span><br>Eligibility reduced to 6 months of service with 500+ hours. Effective 4/1/2020. <span class="citation">p. 2, para. 3</span></td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>No modification to eligibility in this SMM.</td>
+          <td><span class="status-badge status-modified">Modified</span><br>Immediate eligibility for all full-time bargaining unit employees. Part-time after 6 months. Effective 7/1/2024. <span class="citation">p. 1, para. 2</span></td>
+        </tr>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Vesting Schedule</td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>6-year graded vesting: 20% per year starting Year 2. <span class="citation">p. 12, para. 4</span></td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>No modification to vesting schedule.</td>
+          <td><span class="status-badge status-modified">Modified</span><br>Changed to 3-year cliff vesting. 100% vested after 36 months credited service. Applies to service on or after 1/1/2022. <span class="citation">p. 4, para. 1</span></td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>3-year cliff vesting remains in effect per SMM #2.</td>
+        </tr>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Normal Retirement Age</td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>Age 65. No early retirement provision. <span class="citation">p. 19, para. 1</span></td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>No modification.</td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>No modification.</td>
+          <td><span class="status-badge status-modified">Modified</span><br>Early retirement added: age 55 with 20 years service. Benefit reduced 6% per year before 65. <span class="citation">p. 3, para. 5</span></td>
+        </tr>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Benefit Formula</td>
+          <td><span class="status-badge status-superseded">Superseded</span><br>$52.00/month per year of credited service. <span class="citation">p. 21, para. 3</span></td>
+          <td><span class="status-badge status-modified">Modified</span><br>Increased to $58.00/month per year of service effective 1/1/2020. <span class="citation">p. 3, para. 1</span></td>
+          <td><span class="status-badge status-modified">Modified</span><br>Increased to $64.00/month per year of service effective 1/1/2022. <span class="citation">p. 2, para. 2</span></td>
+          <td><span class="status-badge status-modified">Modified</span><br>Increased to $68.50/month per year. Board authorized annual CPI adjustment capped at 2%. <span class="citation">p. 2, para. 1</span></td>
+        </tr>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Claims Procedure</td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>Claims filed with Board of Trustees. 45-day initial review. Certified mail notification. <span class="citation">p. 28, para. 2</span></td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>No modification.</td>
+          <td><span class="status-badge status-modified">Modified</span><br>Electronic claims submission now accepted via participant portal. Review period unchanged at 45 days. <span class="citation">p. 6, para. 3</span></td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>Electronic and written claims both accepted per SMM #2.</td>
+        </tr>
+        <tr>
+          <td><span class="drag-handle">&#8942;&#8942;</span>Disability Benefits</td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>No disability pension provision in original SPD. <span class="citation">p. 25</span></td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>No modification.</td>
+          <td><span class="status-badge status-unchanged">Unchanged</span><br>No modification.</td>
+          <td><span class="status-badge status-added">Added</span><br>Disability pension added for participants with 10+ years service. Benefit equals accrued benefit without early retirement reduction. Requires SSDI award. <span class="citation">p. 5, para. 2</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
