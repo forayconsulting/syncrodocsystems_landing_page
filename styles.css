@@ -715,6 +715,17 @@ body {
   color: var(--secondary);
 }
 
+.team-bio a {
+  color: var(--ink);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: border-color 0.2s ease;
+}
+
+.team-bio a:hover {
+  border-color: var(--terracotta);
+}
+
 @media (max-width: 900px) {
   .team-grid {
     grid-template-columns: 1fr;
