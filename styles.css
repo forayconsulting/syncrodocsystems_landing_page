@@ -661,6 +661,75 @@ body {
   color: var(--terracotta) !important;
 }
 
+/* Workspace form */
+.workspace-form {
+  margin-bottom: 1.25rem;
+}
+
+.workspace-input-group {
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--rule);
+  background: white;
+  margin-bottom: 0.5rem;
+  transition: border-color 0.2s ease;
+}
+
+.workspace-input-group:focus-within {
+  border-color: var(--forest);
+}
+
+.workspace-input {
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 0.7rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--ink);
+  outline: none;
+}
+
+.workspace-input::placeholder {
+  color: var(--rule);
+}
+
+.workspace-suffix {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--secondary);
+  padding-right: 0.75rem;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.workspace-error {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--terracotta);
+  margin-bottom: 0.5rem;
+}
+
+.workspace-submit {
+  width: 100%;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.7rem;
+  background: var(--ink);
+  color: var(--cream);
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.workspace-submit:hover {
+  background: var(--forest);
+}
+
 .login-modal-close {
   position: absolute;
   top: 1rem;

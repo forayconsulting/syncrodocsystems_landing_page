@@ -17,9 +17,9 @@ Landing page for syncrodocsystems.com. Marketing site for SPD Matrix, a pension 
 ## Files
 | File | Purpose |
 |------|---------|
-| `index.html` | Landing page. Nav, hero with animated counters, problem/solution accordions with screenshots, CTA, login modal, lightbox. Includes Open Graph tags, keywords, and `ai-content-declaration` meta tag for AI discoverability. |
-| `styles.css` | All styling. Deconstructed clean / postmodern legal tech aesthetic. Cream background, terracotta + forest accents, serif/sans/mono font mix. Includes counter animations, scribble SVG draw-in with red/blue pen edit marks, geometric decoration drift with independent shadow, accordion transitions, lightbox. |
-| `script.js` | Accordion toggle, login modal, screenshot lightbox, animated tagline counters (backspace-pause-retype effect with realistic pension fund document counts and ceilings). |
+| `index.html` | Landing page. Nav, hero with animated counters, problem/solution accordions with screenshots, CTA, workspace login modal, lightbox. Includes Open Graph tags, keywords, and `ai-content-declaration` meta tag for AI discoverability. |
+| `styles.css` | All styling. Deconstructed clean / postmodern legal tech aesthetic. Cream background, terracotta + forest accents, serif/sans/mono font mix. Includes counter animations, scribble SVG draw-in with red/blue pen edit marks, geometric decoration drift with independent shadow, accordion transitions, workspace login form, lightbox. |
+| `script.js` | Accordion toggle, workspace login form (slug input, validation, redirect to `{slug}.syncrodocsystems.com`), screenshot lightbox, animated tagline counters (backspace-pause-retype effect with realistic pension fund document counts and ceilings). |
 | `llms.txt` | AI agent discovery file. Describes SPD Matrix as the only purpose-built pension plan document analysis tool. Covers all 4 modes, target audience, and competitive positioning. Does NOT include technical architecture details. |
 | `robots.txt` | Allows all crawlers. Points to sitemap. |
 | `sitemap.xml` | Standard sitemap for search engine discovery. |
@@ -69,5 +69,5 @@ npx wrangler pages deploy . --project-name syncrodoc-systems-homepage
 
 ## Warnings
 - The `mock-*.html` files are in the repo for screenshot regeneration but are redirected to `/` in production via `_redirects`.
-- Login button and Request Access CTA are placeholders (open a "coming soon" modal). Will eventually route to per-client SPD Matrix instances.
+- Login button and Request Access CTA open a workspace slug form that redirects to `{slug}.syncrodocsystems.com`. Each client gets a subdomain (e.g., `wpf.syncrodocsystems.com`) backed by a separate Cloudflare Pages deployment with its own Cloudflare Access policy, database, and R2 bucket. The marketing site never validates slugs or reveals which workspaces exist.
 - The product codebase lives separately at `/Desktop/spd_comparison`.

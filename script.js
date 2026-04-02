@@ -19,13 +19,39 @@
   var loginBtn = document.getElementById('loginBtn');
   var requestAccessBtn = document.getElementById('requestAccessBtn');
   var modal = document.getElementById('loginModal');
+  var workspaceForm = document.getElementById('workspaceForm');
+  var workspaceSlug = document.getElementById('workspaceSlug');
+  var workspaceError = document.getElementById('workspaceError');
 
-  function openModal(e) { e.preventDefault(); modal.setAttribute('aria-hidden', 'false'); }
+  function openModal(e) {
+    e.preventDefault();
+    modal.setAttribute('aria-hidden', 'false');
+    workspaceSlug.value = '';
+    workspaceError.hidden = true;
+    setTimeout(function () { workspaceSlug.focus(); }, 100);
+  }
   function closeModal() { modal.setAttribute('aria-hidden', 'true'); }
 
   loginBtn.addEventListener('click', openModal);
   requestAccessBtn.addEventListener('click', openModal);
   modal.querySelectorAll('[data-close-modal]').forEach(function (el) { el.addEventListener('click', closeModal); });
+
+  // Normalize input: lowercase, strip anything that isn't a-z, 0-9, or hyphen
+  workspaceSlug.addEventListener('input', function () {
+    workspaceSlug.value = workspaceSlug.value.toLowerCase().replace(/[^a-z0-9\-]/g, '');
+    workspaceError.hidden = true;
+  });
+
+  workspaceForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var slug = workspaceSlug.value.trim().toLowerCase().replace(/[^a-z0-9\-]/g, '');
+    if (!slug || slug !== slug.replace(/^-+|-+$/g, '')) {
+      workspaceError.hidden = false;
+      workspaceSlug.focus();
+      return;
+    }
+    window.location.href = 'https://' + slug + '.syncrodocsystems.com';
+  });
 
   // ---- Screenshot lightbox ----
   var lightbox = document.getElementById('lightbox');

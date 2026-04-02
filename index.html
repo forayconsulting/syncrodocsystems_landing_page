@@ -202,9 +202,16 @@
     <div class="login-modal-backdrop" data-close-modal></div>
     <div class="login-modal-content">
       <button class="login-modal-close" data-close-modal aria-label="Close">&times;</button>
-      <h3>Login</h3>
-      <p>Client login portal coming soon. Your team will be routed to the correct instance automatically.</p>
-      <p class="login-modal-contact">For access, contact your account administrator.</p>
+      <h3>Sign in to your workspace</h3>
+      <form class="workspace-form" id="workspaceForm" novalidate>
+        <div class="workspace-input-group">
+          <input type="text" id="workspaceSlug" class="workspace-input" placeholder="your-workspace" autocomplete="off" autocapitalize="none" spellcheck="false" required pattern="[a-z0-9\-]+">
+          <span class="workspace-suffix">.syncrodocsystems.com</span>
+        </div>
+        <p class="workspace-error" id="workspaceError" hidden>Enter a valid workspace name (letters, numbers, hyphens).</p>
+        <button type="submit" class="workspace-submit">Continue</button>
+      </form>
+      <p class="login-modal-contact">Don't know your workspace name? Contact your account administrator.</p>
     </div>
   </div>
 
