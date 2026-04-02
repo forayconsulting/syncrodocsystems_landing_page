@@ -17,9 +17,10 @@ Landing page for syncrodocsystems.com. Marketing site for SPD Matrix, a pension 
 ## Files
 | File | Purpose |
 |------|---------|
-| `index.html` | Landing page. Nav, hero with animated counters, problem/solution accordions with screenshots, CTA, workspace login modal, lightbox. Includes Open Graph tags, keywords, and `ai-content-declaration` meta tag for AI discoverability. |
-| `styles.css` | All styling. Deconstructed clean / postmodern legal tech aesthetic. Cream background, terracotta + forest accents, serif/sans/mono font mix. Includes counter animations, scribble SVG draw-in with red/blue pen edit marks, geometric decoration drift with independent shadow, accordion transitions, workspace login form, lightbox. |
-| `script.js` | Accordion toggle, workspace login form (slug input, validation, redirect to `{slug}.syncrodocsystems.com`), screenshot lightbox, animated tagline counters (backspace-pause-retype effect with realistic pension fund document counts and ceilings). |
+| `index.html` | Landing page. Nav with About link, hero with animated counters, problem/solution accordions with screenshots, CTA, workspace login modal, lightbox. Includes Open Graph tags, keywords, and `ai-content-declaration` meta tag for AI discoverability. |
+| `about.html` | About page. Origin story, team bios with headshots (Joey Mokos, Ricardo Govindasamy, Clayton Chancey), and four "How it works" principles (data isolation, whole-document context, citations, speed). Shares nav, login modal, footer, and stylesheet with index. |
+| `styles.css` | All styling. Deconstructed clean / postmodern legal tech aesthetic. Cream background, terracotta + forest accents, serif/sans/mono font mix. Includes counter animations, scribble SVG draw-in with red/blue pen edit marks, geometric decoration drift with independent shadow, accordion transitions, workspace login form, about page team grid with circular headshots, principles grid, lightbox. |
+| `script.js` | Accordion toggle, workspace login form (slug input, validation, redirect to `{slug}.syncrodocsystems.com`), screenshot lightbox, animated tagline counters (backspace-pause-retype effect with realistic pension fund document counts and ceilings). Guards for elements not present on about page. |
 | `llms.txt` | AI agent discovery file. Describes SPD Matrix as the only purpose-built pension plan document analysis tool. Covers all 4 modes, target audience, and competitive positioning. Does NOT include technical architecture details. |
 | `robots.txt` | Allows all crawlers. Points to sitemap. |
 | `sitemap.xml` | Standard sitemap for search engine discovery. |

@@ -33,7 +33,7 @@
   function closeModal() { modal.setAttribute('aria-hidden', 'true'); }
 
   loginBtn.addEventListener('click', openModal);
-  requestAccessBtn.addEventListener('click', openModal);
+  if (requestAccessBtn) requestAccessBtn.addEventListener('click', openModal);
   modal.querySelectorAll('[data-close-modal]').forEach(function (el) { el.addEventListener('click', closeModal); });
 
   // Normalize input: lowercase, strip anything that isn't a-z, 0-9, or hyphen
@@ -57,7 +57,7 @@
   var lightbox = document.getElementById('lightbox');
   var lightboxImg = document.getElementById('lightboxImg');
 
-  function closeLightbox() { lightbox.setAttribute('aria-hidden', 'true'); }
+  function closeLightbox() { if (lightbox) lightbox.setAttribute('aria-hidden', 'true'); }
 
   document.querySelectorAll('[data-lightbox]').forEach(function (img) {
     img.addEventListener('click', function (e) {
@@ -68,14 +68,16 @@
     });
   });
 
-  lightbox.querySelectorAll('[data-close-lightbox]').forEach(function (el) {
-    el.addEventListener('click', closeLightbox);
-  });
+  if (lightbox) {
+    lightbox.querySelectorAll('[data-close-lightbox]').forEach(function (el) {
+      el.addEventListener('click', closeLightbox);
+    });
+  }
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       if (modal.getAttribute('aria-hidden') === 'false') closeModal();
-      if (lightbox.getAttribute('aria-hidden') === 'false') closeLightbox();
+      if (lightbox && lightbox.getAttribute('aria-hidden') === 'false') closeLightbox();
     }
   });
 
