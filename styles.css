@@ -803,6 +803,23 @@ body {
   color: var(--secondary);
 }
 
+.footer-contact {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--secondary);
+}
+
+.footer-contact a {
+  color: var(--secondary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.footer-contact a:hover {
+  border-color: var(--terracotta);
+}
+
 .footer-copy {
   font-family: var(--font-mono);
   font-size: 0.7rem;
