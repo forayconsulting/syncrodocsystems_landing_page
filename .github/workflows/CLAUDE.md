@@ -23,5 +23,6 @@ GitHub Actions pipeline that deploys the static site to Cloudflare Pages.
 - **Redirects**: `_redirects` at the repo root is uploaded with every deploy and handles `about.html`, `/about`, the legacy `mock-*.html` URLs, and `articles/_TEMPLATE.html`.
 
 ## Warnings
-- `actions/checkout@v4` and `cloudflare/wrangler-action@v3` were flagged earlier as Node.js 20 based, with GitHub's Node 20 retirement expected around September 2026. That date has arrived. Check the workflow log on the next push and bump the action versions if a runner deprecation warning or failure appears.
+- `actions/checkout@v4` and `cloudflare/wrangler-action@v3` log "Node 20 is being deprecated. This workflow is running with Node 24 by default." As of the 11 Sep 2026 run this is informational and the deploy succeeds. Bump the action versions when a newer major is available; do not set `ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION`.
+- Wrangler warns that the checkout has uncommitted changes because the action runs in a fresh clone. Harmless; `--commit-dirty=true` on the command would silence it.
 - A failed deploy on `main` leaves the previous production deployment live. Cloudflare Pages does not roll back on its own, so re-run the job or deploy manually after fixing the cause.
