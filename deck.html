@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Platform overview — SyncroDoc</title>
+<meta name="description" content="The SyncroDoc platform overview in eleven slides: the problem with manual plan document reconciliation, the three engines, the six workflows, security posture, and what adoption requires.">
+<link rel="canonical" href="https://syncrodocsystems.com/deck.html">
+<meta property="og:title" content="Platform overview — SyncroDoc">
+<meta property="og:description" content="The SyncroDoc platform overview in eleven slides, with a PDF download.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SyncroDoc Systems">
+<meta name="robots" content="index, follow, max-snippet:-1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="article.css">
+<style>
+.deck{padding:clamp(46px,6vw,80px) 0 clamp(60px,7vw,96px)}
+.deck .wrap{max-width:1100px}
+.deck-head{max-width:70ch;margin-bottom:clamp(22px,3vw,32px)}
+.deck-tools{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;
+  padding-bottom:clamp(24px,3vw,36px);margin-bottom:clamp(28px,3.4vw,44px);border-bottom:1px solid var(--line)}
+.deck-tools .tlink{font-size:15px}
+.slides{display:grid;gap:clamp(28px,3.6vw,48px)}
+@media(max-width:600px){.slides{padding-bottom:72px}}
+.slide{scroll-margin-top:24px}
+.slide-n{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--amber-d);margin:0 0 10px}
+.slide-card{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  box-shadow:0 10px 30px rgba(30,39,97,.07)}
+.slide-card img{display:block;width:100%;max-width:100%;height:auto;aspect-ratio:16/9}
+.deck-nav{position:fixed;right:16px;bottom:16px;z-index:20;display:flex;align-items:center;gap:6px;
+  padding:6px;background:#fff;border:1px solid var(--line-2);border-radius:10px;
+  box-shadow:0 10px 30px rgba(30,39,97,.14)}
+.deck-nav button{font-family:var(--body);font-size:14px;font-weight:600;color:var(--navy);
+  background:var(--mist);border:1px solid var(--line);border-radius:6px;padding:8px 12px;cursor:pointer}
+.deck-nav button:hover{background:var(--line)}
+.deck-nav button:disabled{opacity:.45;cursor:default}
+.deck-nav .pos{font-family:var(--mono);font-size:13px;color:var(--slate);min-width:5.5ch;text-align:center}
+@media (max-width:480px){.deck-nav{right:12px;bottom:12px}.deck-nav button{padding:8px 10px}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="logo" href="index.html"><img src="logo.png" alt="SyncroDoc"></a>
+    <div class="hdr-acts">
+      <a class="tlink" href="index.html">Platform</a>
+      <a class="tlink" href="blog.html">Insights</a>
+      <a class="btn amber" href="index.html#start">Request access</a>
+    </div>
+  </div>
+</header>
+
+<section class="deck">
+  <div class="wrap">
+    <div class="deck-head">
+      <p class="eyebrow">Platform overview</p>
+      <h1>SyncroDoc in eleven slides</h1>
+      <p class="lede">What the platform does, how it works, and what it takes to adopt it. Read here or take the PDF.</p>
+    </div>
+
+    <div class="deck-tools">
+      <a class="btn amber" href="SyncroDoc-Platform-Overview.pdf?v=d155bb55" download>Download PDF</a>
+      <a class="tlink" href="SyncroDoc-Platform-Overview.pdf?v=d155bb55" target="_blank" rel="noopener">Open PDF in browser</a>
+    </div>
+
+    <div class="slides" id="slides">
+      <div class="slide" id="s1"><p class="slide-n">01 / 11</p><div class="slide-card"><img src="deck/slide-01.webp" width="1600" height="900" loading="eager" alt="Title slide: Document Intelligence for Benefits Administration"></div></div>
+      <div class="slide" id="s2"><p class="slide-n">02 / 11</p><div class="slide-card"><img src="deck/slide-02.webp" width="1600" height="900" loading="lazy" alt="Plan document reconciliation is still a manual, high-variance process. Benefits administrators absorb the cost of comparing carrier documents line by line."></div></div>
+      <div class="slide" id="s3"><p class="slide-n">03 / 11</p><div class="slide-card"><img src="deck/slide-03.webp" width="1600" height="900" loading="lazy" alt="One platform, three engines. Each engine addresses a different failure point in the current process, and they run as a single pass, not three tools."></div></div>
+      <div class="slide" id="s4"><p class="slide-n">04 / 11</p><div class="slide-card"><img src="deck/slide-04.webp" width="1600" height="900" loading="lazy" alt="Six workflows, one environment. Every workflow runs on the same ingestion and analysis core. Adding one is a configuration decision, not a development project."></div></div>
+      <div class="slide" id="s5"><p class="slide-n">05 / 11</p><div class="slide-card"><img src="deck/slide-05.webp" width="1600" height="900" loading="lazy" alt="The output is your document, not a report about it. SyncroDoc writes findings into the carrier's own template as inline edits, tracked changes, and margin comments."></div></div>
+      <div class="slide" id="s6"><p class="slide-n">06 / 11</p><div class="slide-card"><img src="deck/slide-06.webp" width="1600" height="900" loading="lazy" alt="What is under the hood. Capability grouped the way a buying committee evaluates it: the analyst's question, the manager's question, and IT's question."></div></div>
+      <div class="slide" id="s7"><p class="slide-n">07 / 11</p><div class="slide-card"><img src="deck/slide-07.webp" width="1600" height="900" loading="lazy" alt="What happens between upload and output. Five stages run on every document: ingest and normalize, structure and map, analyze, reconstruct, validate and release."></div></div>
+      <div class="slide" id="s8"><p class="slide-n">08 / 11</p><div class="slide-card"><img src="deck/slide-08.webp" width="1600" height="900" loading="lazy" alt="Four problems a general-purpose AI tool does not solve. Uploading a document to a chatbot is not the same product as something an analyst can file."></div></div>
+      <div class="slide" id="s9"><p class="slide-n">09 / 11</p><div class="slide-card"><img src="deck/slide-09.webp" width="1600" height="900" loading="lazy" alt="Reclaimed analyst capacity covers the license more than twice over. The saving is analyst hours redirected from transcription to judgment."></div></div>
+      <div class="slide" id="s10"><p class="slide-n">10 / 11</p><div class="slide-card"><img src="deck/slide-10.webp" width="1600" height="900" loading="lazy" alt="Built to clear an enterprise IT security review. Security posture is documented up front rather than assembled during diligence."></div></div>
+      <div class="slide" id="s11"><p class="slide-n">11 / 11</p><div class="slide-card"><img src="deck/slide-11.webp" width="1600" height="900" loading="lazy" alt="Configuration, not custom code. New carriers and new document types are mapped by the platform rather than coded field by field."></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="deck-nav" role="group" aria-label="Slide navigation">
+  <button type="button" id="prev" aria-label="Previous slide">Prev</button>
+  <span class="pos" id="pos" aria-live="polite">1 / 11</span>
+  <button type="button" id="next" aria-label="Next slide">Next</button>
+</div>
+
+<footer>
+  <div class="wrap foot-in">
+    <div>SyncroDoc Systems © <span id="yr">2026</span></div>
+    <div><a href="index.html">Platform</a> &nbsp;·&nbsp; <a href="blog.html">All insights</a> &nbsp;·&nbsp; <a href="mailto:info@syncrodocsystems.com">info@syncrodocsystems.com</a></div>
+  </div>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+(function(){
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total = slides.length, current = 0;
+  var pos = document.getElementById('pos');
+  var prev = document.getElementById('prev'), next = document.getElementById('next');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function render(){
+    pos.textContent = (current + 1) + ' / ' + total;
+    prev.disabled = current === 0;
+    next.disabled = current === total - 1;
+  }
+  function go(i){
+    i = Math.max(0, Math.min(total - 1, i));
+    current = i;
+    slides[i].scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: 'start'});
+    render();
+  }
+  prev.addEventListener('click', function(){ go(current - 1); });
+  next.addEventListener('click', function(){ go(current + 1); });
+  document.addEventListener('keydown', function(e){
+    if (e.target && /^(input|textarea|select)$/i.test(e.target.tagName)) return;
+    if (e.key === 'ArrowRight' || e.key === 'PageDown') { e.preventDefault(); go(current + 1); }
+    else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); go(current - 1); }
+  });
+  if ('IntersectionObserver' in window) {
+    var ratios = slides.map(function(){ return 0; });
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){ ratios[slides.indexOf(en.target)] = en.intersectionRatio; });
+      var best = 0;
+      for (var k = 1; k < total; k++) if (ratios[k] > ratios[best]) best = k;
+      if (ratios[best] > 0 && best !== current) { current = best; render(); }
+    }, {threshold: [0, .25, .5, .75, 1]});
+    slides.forEach(function(s){ io.observe(s); });
+  }
+  render();
+})();
+</script>
+</body>
+</html>

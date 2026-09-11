@@ -1,22 +1,19 @@
 # screenshots
 
-Product UI screenshots and team headshots. UI screenshots are displayed in the accordion panels on the landing page. Headshots are displayed on the about page.
+Founder headshots displayed in the `#team` section of `index.html`. The folder name is historical; the product UI screenshots that used to live here were removed in the redesign.
 
 ## Contents
 | File | Purpose |
 |------|---------|
-| `comparison.png` | Cross-plan comparison table (4 fictional pension plans side by side) |
-| `amendments.png` | Amendment tracking table (base SPD + 3 SMMs with status badges) |
-| `timeline.png` | Minutes analysis interactive timeline (8 meetings, topic filtering, detail panel) |
-| `invoices.png` | Invoice analysis dashboard (dark theme, stacked bar chart, category breakdown) |
-| `joey_headshot.jpeg` | Joey Mokos headshot, displayed on `about.html` |
-| `ricardo_headshot.jpeg` | Ricardo Govindasamy headshot, displayed on `about.html` (cropped to remove tilted polaroid frame from original) |
-| `clayton_headshot.jpeg` | Clayton Chancey headshot, displayed on `about.html` |
+| `joey_headshot.jpeg` | Joey Mokos |
+| `ricardo_headshot.jpeg` | Ricardo Govindasamy (cropped to remove the tilted polaroid frame from the original) |
+| `clayton_headshot.jpeg` | Clayton Chancey |
 
 ## Relationships
-- **Parent**: Root landing page and about page. UI screenshots referenced by `index.html` accordion sections. Headshots referenced by `about.html`.
-- **Related**: `mock-*.html` files in parent directory were used to generate the UI screenshots.
+- **Parent**: `index.html` references each file by relative path (`screenshots/<name>.jpeg`) inside a `.shot` element in `#team`.
+- Framing is controlled per photo with inline CSS vars on `.shot` (`--zoom`, `--shift`). Grayscale and contrast are applied in `.person .shot img`. See the root `CLAUDE.md` under "Founder photo framing".
 
 ## Warnings
-- All plan names, vendor names, and case names are fictional. Do not use real client names.
-- Screenshots are static PNGs. If the mock HTML files are updated, screenshots must be manually re-captured.
+- Keep this folder and these filenames. The homepage depends on the paths.
+- Photos are served in color and converted to grayscale in CSS, so a replacement photo does not need to be pre-processed.
+- If a headshot is replaced with a different crop, re-check `--zoom` and `--shift` so all three heads sit at the same height.
