@@ -5,3 +5,6 @@
 /mock-timeline.html / 302
 /mock-invoices.html / 302
 /articles/_TEMPLATE.html /blog 302
+/articles/_TEMPLATE /blog 302
+/articles/src/* /blog 302
+/.github/* / 302

@@ -1,41 +1,53 @@
 name: Deploy
 
+# Production deploy on every push to main. With the protect-main ruleset active, the only way
+# a commit reaches main is a reviewed pull request with the `lint` check green (or Clayton's
+# admin bypass). After deploying, the generated files are committed back so the repo matches
+# the live site. Pushes made with GITHUB_TOKEN do not trigger workflows, so this cannot loop.
+
 on:
   push:
     branches: [main]
-  pull_request:
-    branches: [main]
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+permissions:
+  contents: write
 
 jobs:
-  deploy:
+  production:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
-      pull-requests: write
+    environment:
+      name: production
+      url: https://syncrodocsystems.com
 
     steps:
       - uses: actions/checkout@v4
 
+      - name: Render articles from Markdown
+        run: node .github/scripts/render-articles.mjs
+
+      - name: Build article lists (blog.html, index.html, sitemap.xml)
+        run: node .github/scripts/build-article-lists.mjs
+
       - name: Deploy to Cloudflare Pages
-        id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy . --project-name=syncrodoc-systems-homepage --branch=${{ github.head_ref || github.ref_name }}
+          command: pages deploy . --project-name=syncrodoc-systems-homepage --branch=main --commit-dirty=true
 
-      - name: Comment preview URL on PR
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const url = '${{ steps.deploy.outputs.deployment-url }}';
-            if (url) {
-              github.rest.issues.createComment({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                body: `Preview deployed: ${url}`
-              });
-            }
+      - name: Commit generated files back to main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A -- articles blog.html index.html sitemap.xml
+          if git diff --cached --quiet; then echo "nothing to commit"; exit 0; fi
+          git commit -m "Render articles and update blog lists"
+          for i in 1 2 3; do
+            git push && exit 0
+            git pull --rebase
+          done
+          exit 1

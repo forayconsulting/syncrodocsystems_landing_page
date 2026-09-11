@@ -1,0 +1,3 @@
+# Clayton reviews every change. The protect-main ruleset requires code-owner approval,
+# so nothing merges without him. Writers have Write access on branches only.
+* @forayconsulting

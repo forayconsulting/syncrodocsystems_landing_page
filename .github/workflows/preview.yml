@@ -1,0 +1,81 @@
+name: Preview
+
+# Preview deploy for pull requests from branches in this repo. Runs with the workflow and scripts
+# from main (pull_request_target); the PR head is checked out into head/ as data only and is
+# never executed. Fork PRs get no preview and no secrets.
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  preview:
+    name: Preview
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    environment:
+      name: preview
+
+    steps:
+      - name: Check out main (trusted workflow, scripts, template)
+        uses: actions/checkout@v4
+
+      - name: Check out the pull request (data only)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: head
+          persist-credentials: false
+
+      - name: Strip anything executable or routing-related from the upload
+        run: rm -rf head/.git head/.github head/functions head/_worker.js head/_routes.json head/wrangler.toml head/wrangler.json head/wrangler.jsonc head/package.json head/node_modules
+
+      - name: Use routing and header config from main, never from the pull request
+        run: |
+          rm -f head/_redirects head/_headers
+          cp _redirects head/_redirects
+          if [ -f _headers ]; then cp _headers head/_headers; fi
+
+      - name: Render articles, build lists, and validate the result
+        run: |
+          node .github/scripts/render-articles.mjs --root head
+          node .github/scripts/build-article-lists.mjs --root head
+          npx --yes html-validate@11.15.0 --config .github/htmlvalidate.json head/articles/*.html head/blog.html
+
+      - name: Deploy preview to Cloudflare Pages
+        id: deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: pages deploy head --project-name=syncrodoc-systems-homepage --branch=pr-${{ github.event.pull_request.number }} --commit-dirty=true
+
+      - name: Comment the preview links on the pull request
+        uses: actions/github-script@v7
+        env:
+          ALIAS_URL: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
+          DEPLOY_URL: ${{ steps.deploy.outputs.deployment-url }}
+        with:
+          script: |
+            const url = (process.env.ALIAS_URL || process.env.DEPLOY_URL || '').replace(/\/$/, '');
+            if (!url) { core.warning('No deployment URL returned'); return; }
+            const { owner, repo } = context.repo;
+            const issue_number = context.payload.pull_request.number;
+            const files = await github.paginate(github.rest.pulls.listFiles, { owner, repo, pull_number: issue_number, per_page: 100 });
+            const articles = files
+              .map(f => f.filename)
+              .filter(f => /^articles\/src\/[a-z0-9-]+\.md$/.test(f))
+              .map(f => f.replace(/^articles\/src\//, '').replace(/\.md$/, ''));
+            const lines = ['Preview deployed. This is exactly how it will look once published.', ''];
+            for (const slug of articles) lines.push(`- Your article: ${url}/articles/${slug}.html`);
+            lines.push(`- Blog page: ${url}/blog.html`, `- Homepage: ${url}/#insights`);
+            await github.rest.issues.createComment({ owner, repo, issue_number, body: lines.join('\n') });

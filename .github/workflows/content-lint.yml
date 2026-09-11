@@ -1,0 +1,71 @@
+name: Content lint
+
+# The one required status check on main (ruleset protect-main requires a check named `lint`).
+# Runs with the workflow and scripts from main (pull_request_target); the PR head is checked out
+# into head/ as data only and never executed. No `paths:` filter on purpose: a required check
+# that never runs blocks the merge forever.
+
+on:
+  pull_request_target:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: content-lint-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  lint:   # job id is the required status check name. Do not rename without updating the ruleset.
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Refuse fork pull requests
+        if: github.event.pull_request.head.repo.full_name != github.repository
+        run: |
+          echo "::error::Fork pull requests are not accepted. Ask Clayton for collaborator access and create your file in this repository instead."
+          exit 1
+
+      - name: Check out main (trusted workflow, scripts, template)
+        uses: actions/checkout@v4
+
+      - name: Check out the pull request (data only)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          path: head
+          persist-credentials: false
+
+      - name: List changed files
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" --paginate \
+            --jq '.[] | "\(.status)\t\(.filename)"' > changed.tsv
+          cat changed.tsv
+
+      - name: Writers may only add or edit articles/src/<name>.md
+        if: github.event.pull_request.author_association != 'OWNER'
+        run: node .github/scripts/paths-guard.mjs changed.tsv
+
+      - name: Pick changed articles
+        id: changed
+        run: |
+          # Strict slug shape, so the list can never contain shell metacharacters.
+          awk -F'\t' '$1=="added"||$1=="modified"{print $2}' changed.tsv | grep -E '^articles/src/[a-z0-9]+(-[a-z0-9]+)*\.md$' > articles.txt || true
+          echo "count=$(grep -c . articles.txt || true)" >> "$GITHUB_OUTPUT"
+
+      - name: Article checks
+        if: steps.changed.outputs.count != '0'
+        run: |
+          mapfile -t files < articles.txt
+          node .github/scripts/lint-article.mjs --root head "${files[@]}"
+
+      - name: Render and validate the generated pages
+        run: |
+          node .github/scripts/render-articles.mjs --root head
+          node .github/scripts/build-article-lists.mjs --root head
+          npx --yes html-validate@11.15.0 --config .github/htmlvalidate.json head/articles/*.html head/blog.html
