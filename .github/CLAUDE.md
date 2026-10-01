@@ -16,6 +16,7 @@ CI, content pipeline scripts, and the article template. Read this before touchin
 | `scripts/paths-guard.mjs` | Reads `changed.tsv` (`status<TAB>path` from the PR files API); allows only `added`/`modified` `articles/src/<slug>.md`. |
 | `scripts/vendor/marked.mjs` | Vendored marked 18.0.12 (MIT), unmodified ESM build. To bump: `npm pack marked@<ver>`, copy `package/lib/marked.esm.js` here, re-run the local dry run and diff the rendered article. |
 | `templates/article.html` | Article page with `{{title}}`, `{{description}}`, `{{card}}`, `{{slug}}`, `{{date_iso}}`, `{{date_long}}`, `{{byline}}`, `{{author_json}}`, `{{title_json}}`, `{{modified_meta}}`, `{{modified_json}}`, `{{body}}`. All markup changes to article pages happen here. |
+| `docs/blog-post-authoring-guide.md` | Internal reference for Clayton: plain-language publishing walkthrough for the writers and a paste-in prompt for Claude Code that formats a draft and opens the PR. Not served (`_redirects` covers `/.github/*`). Update its rule list when `lint-article.mjs` changes. |
 | `htmlvalidate.json` | html-validate config, `root: true` so a config planted in a PR checkout is never merged. |
 
 ## Security model (why `pull_request_target`)
