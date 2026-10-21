@@ -36,7 +36,7 @@ Flat static site with no build step for the site itself. `index.html` is the who
 | `llms.txt` | Plain-text brief for answer engines: products, core capabilities, differentiators, chatbot comparison, security, human review, team. Product capabilities only. |
 | `robots.txt` | Allows all crawlers, with explicit allows for GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot, Claude-Web, PerplexityBot, Google-Extended. Points to the sitemap. |
 | `sitemap.xml` | Lists `/`, `blog.html`, `deck.html`, `/products/`, each product page, and each article. Generated; do not hand-edit. |
-| `_redirects` | Cloudflare Pages redirects. `about.html` and `/about` 301 to `/#team`. Legacy `mock-*.html` URLs 302 to `/`. The old `articles/_TEMPLATE` URLs (both spellings), `articles/src/*`, and `.github/*` 302 away so sources and scripts are never browsable on the live site. `/products/CLAUDE.md` 302s to `/products/`. |
+| `_redirects` | Cloudflare Pages redirects. `about.html` and `/about` 301 to `/#team`. Legacy `mock-*.html` URLs 302 to `/`. The old `articles/_TEMPLATE` URLs (both spellings), `articles/src/*`, and `.github/*` 302 away so sources and scripts are never browsable on the live site. Every `CLAUDE.md` is served publicly; an exact-path rule does not override an existing file on Pages, only splat rules do. |
 
 ## Content workflows
 

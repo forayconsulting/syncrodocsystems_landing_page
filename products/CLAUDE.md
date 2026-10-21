@@ -26,8 +26,9 @@ Each demo is a simplified rebuild of the real app's results view with fictional 
 ## Conventions
 - Root-absolute links (`/article.css`, `/products/...`) because pages sit two levels deep.
 - No client, carrier, fund, firm or staff names in copy or demos. No pricing. No "use case" or "workflow" wording. No em dashes.
-- Held products (not built or not confirmed as of 2026-10-21): Required Plan Document Generator, Contract/CBA Intelligence, New Plan Onboarding Tool. Do not add pages for them without sign-off from Joey and Ricardo.
+- Add a product page only after the product is confirmed with the founders.
 
 ## Warnings
+- This file is served publicly at `/products/CLAUDE.md`. Keep internal plans out of it.
 - Headers and footers are duplicated across the 5 pages here plus `../blog.html`, `../deck.html`, `../index.html` and `../.github/templates/article.html`. A nav change touches all of them.
 - Product claims must match what the app does. Check the product app before describing a new capability.
