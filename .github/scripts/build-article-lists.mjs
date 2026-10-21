@@ -1,5 +1,5 @@
 // Regenerate the article cards in blog.html and index.html (#insights, three newest) and sitemap.xml
-// from the <head> of every articles/*.html. Usage: node .github/scripts/build-article-lists.mjs [--root DIR] [--check]
+// from the <head> of every articles/*.html. The sitemap also lists products/ and each products/<slug>/. Usage: node .github/scripts/build-article-lists.mjs [--root DIR] [--check]
 // --check writes nothing and exits 1 if any file would change. A missing marker exits 2 and writes nothing.
 import fs from 'node:fs';
 import path from 'node:path';
@@ -50,12 +50,22 @@ const out = [
   replaceList('index.html', '<div class="tiles posts">', articles.slice(0, 3).map(card)),
 ];
 
+// Product pages are hand-written at products/<slug>/index.html; the suite page is products/index.html.
+const prodDir = path.join(root, 'products');
+const products = fs.existsSync(path.join(prodDir, 'index.html')) ? [''] : [];
+if (fs.existsSync(prodDir)) {
+  for (const d of fs.readdirSync(prodDir, { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name))) {
+    if (d.isDirectory() && fs.existsSync(path.join(prodDir, d.name, 'index.html'))) products.push(d.name);
+  }
+}
+
 const sitemap = [
   '<?xml version="1.0" encoding="UTF-8"?>',
   '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
   `  <url><loc>${SITE}/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>`,
   `  <url><loc>${SITE}/blog.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
   `  <url><loc>${SITE}/deck.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`,
+  ...products.map(slug => `  <url><loc>${SITE}/products/${slug ? slug + '/' : ''}</loc><changefreq>monthly</changefreq><priority>${slug ? '0.8' : '0.9'}</priority></url>`),
   ...articles.map(a => `  <url><loc>${SITE}/articles/${a.file}</loc><lastmod>${a.updated || a.date}</lastmod><priority>0.6</priority></url>`),
   '</urlset>',
   '',

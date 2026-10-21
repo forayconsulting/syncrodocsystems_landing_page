@@ -49,7 +49,7 @@ jobs:
         run: |
           node .github/scripts/render-articles.mjs --root head
           node .github/scripts/build-article-lists.mjs --root head
-          npx --yes html-validate@11.15.0 --config .github/htmlvalidate.json head/articles/*.html head/blog.html
+          npx --yes html-validate@11.15.0 --config .github/htmlvalidate.json head/articles/*.html head/blog.html head/products/*.html head/products/*/index.html
 
       - name: Deploy preview to Cloudflare Pages
         id: deploy
@@ -77,5 +77,5 @@ jobs:
               .map(f => f.replace(/^articles\/src\//, '').replace(/\.md$/, ''));
             const lines = ['Preview deployed. This is exactly how it will look once published.', ''];
             for (const slug of articles) lines.push(`- Your article: ${url}/articles/${slug}.html`);
-            lines.push(`- Blog page: ${url}/blog.html`, `- Homepage: ${url}/#insights`);
+            lines.push(`- Blog page: ${url}/blog.html`, `- Products: ${url}/products/`, `- Homepage: ${url}/#insights`);
             await github.rest.issues.createComment({ owner, repo, issue_number, body: lines.join('\n') });
