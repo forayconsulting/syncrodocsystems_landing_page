@@ -68,4 +68,4 @@ jobs:
         run: |
           node .github/scripts/render-articles.mjs --root head
           node .github/scripts/build-article-lists.mjs --root head
-          npx --yes html-validate@11.15.0 --config .github/htmlvalidate.json head/articles/*.html head/blog.html
+          npx --yes html-validate@11.15.0 --config .github/htmlvalidate.json head/articles/*.html head/blog.html head/products/*.html head/products/*/index.html

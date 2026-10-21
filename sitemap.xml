@@ -3,5 +3,10 @@
   <url><loc>https://syncrodocsystems.com/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
   <url><loc>https://syncrodocsystems.com/blog.html</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://syncrodocsystems.com/deck.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://syncrodocsystems.com/products/</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://syncrodocsystems.com/products/fee-audit-tool/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://syncrodocsystems.com/products/meeting-minutes-intelligence/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://syncrodocsystems.com/products/plan-merger-document-tool/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://syncrodocsystems.com/products/plan-operations-audit/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://syncrodocsystems.com/articles/what-a-plan-document-tool-must-do.html</loc><lastmod>2026-08-26</lastmod><priority>0.6</priority></url>
 </urlset>

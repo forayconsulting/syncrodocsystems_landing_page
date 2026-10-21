@@ -7,18 +7,24 @@
 
 SyncroDoc is a product of SyncroDoc Systems LLC. https://syncrodocsystems.com
 
-## What it does
+## Products
 
-- **Cross-plan comparison**: two or more plans compared provision by provision in a structured matrix showing where documents agree, differ, or are silent, with page and paragraph cited. Built for post-merger consolidation where a legal team has to reconcile 5, 10, or 15 inherited plans into one standardized document.
-- **Amendment tracking**: summaries of material modification mapped chronologically against the base plan document, with each provision marked unchanged, modified, added, or superseded.
-- **SPD restatement**: a consolidated, current-state summary plan description generated from the amendment history, with citation trails intact.
-- **Contract analysis**: service agreements and vendor terms read against each other or against a standard.
-- **Document reconciliation**: carrier booklet, plan document and SPD checked against one another for contradictions.
-- **Benefit summary audits**: a benefit summary or schedule checked against its approved template.
-- **Plan document matching**: an inherited or unfamiliar document mapped against known plan structures.
-- **Decision extraction**: decisions and discussion topics pulled from years of board minutes, committee notes, and working session records onto an interactive timeline, filterable by topic across all meetings. Produces reports that trace how a specific issue evolved across the governance record.
-- **Fee and invoice analysis**: cost data extracted from vendor invoices, billing statements, and fee schedules, charted by vendor and category over time, and exported as structured reports.
-- **General document analysis**: open analysis for document work that does not fit a named workflow.
+SyncroDoc is sold as a suite. A client licenses the product that fits its problem and turns on
+more as needed. Every product runs on the same core.
+
+- **Plan Operations Audit** (https://syncrodocsystems.com/products/plan-operations-audit/): checks the plan build used for claims setup against the carrier's benefit summary. Copays, deductibles, limits and exclusions are marked Match, Mismatch, Missing or Uncertain, each with the row it came from. Confirmed findings export as a marked-up plan build, with comments for the carrier drafted for review. For TPAs, fund offices and benefits operations teams.
+- **Plan Merger Document Tool** (https://syncrodocsystems.com/products/plan-merger-document-tool/): compares the SPDs, plan documents and amendments of every plan in a merger provision by provision, matched by meaning, with each difference marked modified, added or removed and cited to its page. For multiemployer funds in a merger, plan sponsors, ERISA counsel and benefits consultants.
+- **Meeting Minutes Intelligence** (https://syncrodocsystems.com/products/meeting-minutes-intelligence/): reads years of board and committee minutes, groups discussions and decisions by topic on a timeline, and answers questions with a cited summary linked to the exact meeting and page. For fund administrators, board secretaries and counsel.
+- **Fee Audit Tool** (https://syncrodocsystems.com/products/fee-audit-tool/): reads every line item on legal, actuarial and consulting invoices, groups spend by firm, category and period, and links every total back to its invoice lines. For fund administrators, trustees and finance committees.
+
+The suite page is https://syncrodocsystems.com/products/
+
+## Core capabilities
+
+- Cross-plan comparison: two or more plans compared provision by provision, showing where documents agree, differ, or are silent, with page and paragraph cited.
+- Amendment tracking: summaries of material modification mapped chronologically against the base plan document, with each provision marked unchanged, modified, added, or superseded.
+- SPD restatement: a consolidated, current-state summary plan description generated from the amendment history, with citation trails intact.
+- Contract analysis: service agreements and vendor terms read against each other or against a standard.
 
 Documents up to 1,000 pages per file are handled, and every excerpt includes the exact page number and paragraph reference from the source.
 

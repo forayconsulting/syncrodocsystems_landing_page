@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Operations Audit: Check Claims Setup Against the Benefit Summary | SyncroDoc</title>
+<meta name="description" content="Plan Operations Audit checks the plan build used for claims setup against the carrier's benefit summary, flags every mismatch with the row behind it, and drafts the corrections for your team to review.">
+<link rel="canonical" href="https://syncrodocsystems.com/products/plan-operations-audit/">
+<meta property="og:title" content="Plan Operations Audit | SyncroDoc">
+<meta property="og:description" content="Check the claims setup against the carrier's benefit summary and catch mismatches before claims are paid.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://syncrodocsystems.com/products/plan-operations-audit/">
+<meta property="og:site_name" content="SyncroDoc Systems">
+<meta property="og:image" content="https://syncrodocsystems.com/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="robots" content="index, follow, max-snippet:-1">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "SyncroDoc Plan Operations Audit",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "url": "https://syncrodocsystems.com/products/plan-operations-audit/",
+  "description": "Checks the plan build used for claims setup against the carrier's benefit summary, flags every copay, deductible, limit and exclusion that does not match, and drafts the corrections for review.",
+  "audience": {"@type": "Audience", "audienceType": "Third-party administrators, fund offices, benefits operations teams"},
+  "publisher": {"@type": "Organization", "name": "SyncroDoc Systems LLC", "url": "https://syncrodocsystems.com"}
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/article.css">
+<link rel="stylesheet" href="/products/products.css">
+</head>
+<body>
+
+<header class="hdr">
+  <div class="wrap hdr-in">
+    <a class="logo" href="/"><img src="/logo.png" alt="SyncroDoc"></a>
+    <div class="hdr-acts">
+      <a class="tlink on" href="/products/">Products</a>
+      <a class="tlink opt" href="/blog.html">Insights</a>
+      <a class="btn amber" href="/#start">Request access</a>
+    </div>
+  </div>
+</header>
+
+<section class="p-hero">
+  <div class="wrap p-hero-grid">
+    <div>
+      <p class="eyebrow crumbs"><a href="/products/">Products</a> / Plan Operations Audit</p>
+      <h1>Catch setup errors before a claim is paid wrong.</h1>
+      <p class="sub">Plan Operations Audit checks the plan build your team uses for claims setup against the carrier&rsquo;s benefit summary. It flags every copay, deductible, limit and exclusion that does not match, points to the row behind it, and drafts the corrections.</p>
+      <div class="p-cta">
+        <a class="btn amber" href="mailto:info@syncrodocsystems.com?subject=SyncroDoc%20access%20request%3A%20Plan%20Operations%20Audit">Request access</a>
+        <a class="btn ghost" href="/#roi">Estimate your saving</a>
+      </div>
+      <div class="aud"><span><b>TPAs</b></span><span><b>Fund offices</b></span><span><b>Benefits operations</b></span></div>
+    </div>
+
+    <div>
+      <div class="dm" id="demo" role="img" aria-label="Animated example: an audit of a carrier benefit summary against a plan build finds one copay mismatch and one missing limit, and a reviewer confirms the correction.">
+        <div class="dm-top">
+          <div class="dm-title"><span>Plan Operations Audit</span><b>2027 benefit summary vs. plan build</b></div>
+          <span class="dm-done h" data-s="done">Complete &middot; 45 rows</span>
+        </div>
+        <div class="dm-body">
+          <div class="dm-prog"><span class="dot"></span><span class="lbl">Starting</span><span class="track"><span class="fill"></span></span><span class="t">0:00</span></div>
+          <div class="dm-pills h" data-s="pills">
+            <span class="dm-lbl">Audit</span>
+            <span class="dm-pill ok"><span class="c-ok">0</span> Match</span>
+            <span class="dm-pill bad"><span class="c-mm">0</span> Mismatch</span>
+            <span class="dm-pill bad"><span class="c-mi">0</span> Missing</span>
+          </div>
+          <div class="dm-grid au-grid">
+            <div class="hd"><span>Benefit</span><span>Summary</span><span>Plan build</span><span>Status</span></div>
+            <div class="sec h">Office visits</div>
+            <div class="r h"><span>PCP visit copay</span><span class="mono">$25</span><span class="mono">$25</span><span><span class="chip ok">Match</span></span></div>
+            <div class="r h flag"><span>Specialist visit copay</span><span class="mono">$40</span><span class="mono">$45</span><span><span class="chip bad">Mismatch</span></span></div>
+            <div class="r h"><span>Urgent care copay</span><span class="mono">$50</span><span class="mono">$50</span><span><span class="chip ok">Match</span></span></div>
+            <div class="sec h">Limits and deductibles</div>
+            <div class="r h"><span>Out-of-network deductible</span><span class="mono">$1,500</span><span class="mono">$1,500</span><span><span class="chip ok">Match</span></span></div>
+            <div class="r h flag"><span>Chiropractic visits</span><span class="mono">20/yr</span><span class="muted">blank</span><span><span class="chip bad">Missing</span></span></div>
+            <div class="r h"><span>Emergency room copay</span><span class="mono">$250</span><span class="mono">$250</span><span><span class="chip ok">Match</span></span></div>
+          </div>
+          <div class="au-review h" data-s="review">
+            <div class="top"><b>Specialist visit copay</b><span class="chip bad">Mismatch</span><span class="ref">Row 112</span></div>
+            <p>The summary says <b>$40</b>. The plan build has <b>$45</b>.</p>
+            <div class="acts"><span class="dm-btn">Dismiss</span><span class="dm-btn primary" data-s="confirm">Confirm</span></div>
+            <div class="au-fix h" data-s="fix">Should be: $40</div>
+          </div>
+          <div class="dm-foot"><span>Showing 6 of 45 rows</span><span class="dm-btn h" data-s="export">Export marked-up plan build (1)</span></div>
+        </div>
+      </div>
+      <p class="dm-cap">Illustrative example. Fictional plan and values.</p>
+    </div>
+  </div>
+</section>
+
+<section class="psec">
+  <div class="wrap who">
+    <div>
+      <p class="eyebrow">Who it&rsquo;s for</p>
+      <ul class="who-list">
+        <li>TPAs administering carrier plans</li>
+        <li>Fund offices</li>
+        <li>Benefits operations teams</li>
+      </ul>
+    </div>
+    <p class="who-when">When a benefit summary arrives at renewal and someone has to confirm the claims setup matches it.</p>
+  </div>
+</section>
+
+<section class="psec">
+  <div class="wrap">
+    <div class="shead">
+      <p class="eyebrow">The problem</p>
+      <h2>The setup drifts from the summary.</h2>
+    </div>
+    <ul class="probs">
+      <li><span class="n">01</span>The benefit summary and the plan build are kept by different teams, in different formats, on different schedules.</li>
+      <li><span class="n">02</span>Checking hundreds of benefit lines by hand takes days per plan, so it happens late or not at all.</li>
+      <li><span class="n">03</span>A mismatch nobody catches becomes a claim paid wrong, then an appeal, then rework.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="psec">
+  <div class="wrap">
+    <div class="shead">
+      <p class="eyebrow">What it does</p>
+      <h2>Every benefit line checked. Every finding traced.</h2>
+    </div>
+    <div class="ptiles t4">
+      <div class="ptile"><p class="tnum">01</p><h3>Reads both sides in full</h3><p>Every line in the benefit summary, standard values and plan deviations included, and every row of the plan build.</p></div>
+      <div class="ptile"><p class="tnum">02</p><h3>Flags every difference</h3><p>Copays, deductibles, limits and exclusions are marked Match, Mismatch, Missing or Uncertain.</p></div>
+      <div class="ptile"><p class="tnum">03</p><h3>Points to the source</h3><p>Each finding names the benefit and the row it came from on each side.</p></div>
+      <div class="ptile"><p class="tnum">04</p><h3>Drafts the corrections</h3><p>Confirmed findings export as a marked-up plan build, with comments for the carrier drafted for review.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="psec">
+  <div class="wrap">
+    <div class="shead">
+      <p class="eyebrow">What you get</p>
+      <h2>Outcomes your team and your board can see.</h2>
+    </div>
+    <div class="ptiles">
+      <div class="ptile out"><h3>Fewer claims paid wrong</h3><p>Mismatches are caught before claims are paid against them.</p></div>
+      <div class="ptile out"><h3>Days back per renewal</h3><p>The audit runs in minutes. Your team reviews findings instead of hunting for them.</p></div>
+      <div class="ptile out"><h3>A record you can defend</h3><p>Every correction traces to a line in the benefit summary.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="psec">
+  <div class="wrap">
+    <div class="shead">
+      <p class="eyebrow">How it works</p>
+      <h2>Three steps. One checkpoint.</h2>
+    </div>
+    <div class="steps">
+      <div><p class="tnum">Step 1</p><h3>Upload</h3><p>Upload the carrier&rsquo;s benefit summary and your plan build.</p></div>
+      <div><p class="tnum">Step 2</p><h3>SyncroDoc reads and checks</h3><p>Every benefit line is compared, and each difference is flagged with its row.</p></div>
+      <div><p class="tnum">Step 3</p><h3>Your team decides</h3><p>Confirm or dismiss each finding before anything goes back to the carrier.</p></div>
+    </div>
+    <a class="more-link" href="/#how">How the platform works &rarr;</a>
+  </div>
+</section>
+
+<section class="psec plain">
+  <div class="wrap">
+    <div class="trust">
+      <span>Nothing files automatically</span>
+      <span>Every finding points to its source</span>
+      <span>Single-tenant, never used for training</span>
+      <a href="/#security">Security and vendor review &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section class="psec">
+  <div class="wrap">
+    <div class="shead">
+      <p class="eyebrow">Part of the SyncroDoc suite</p>
+      <h2>Turn on more when you need them.</h2>
+    </div>
+    <div class="prods t3">
+      <a class="prod" href="/products/plan-merger-document-tool/"><p class="for">Funds in mergers &middot; ERISA counsel</p><h3>Plan Merger Document Tool</h3><p>Compare every plan in a merger, provision by provision.</p><span class="more">Explore &rarr;</span></a>
+      <a class="prod" href="/products/meeting-minutes-intelligence/"><p class="for">Administrators &middot; Trustees</p><h3>Meeting Minutes Intelligence</h3><p>Find what the board decided, and when, across years of minutes.</p><span class="more">Explore &rarr;</span></a>
+      <a class="prod" href="/products/fee-audit-tool/"><p class="for">Administrators &middot; Finance committees</p><h3>Fee Audit Tool</h3><p>Audit professional fees over time, line by line.</p><span class="more">Explore &rarr;</span></a>
+    </div>
+    <a class="more-link" href="/products/">All products &rarr;</a>
+  </div>
+</section>
+
+<section class="psec plain">
+  <div class="wrap">
+    <div class="p-end">
+      <div>
+        <h2>See Plan Operations Audit on your own documents.</h2>
+        <p>Bring one benefit summary and its plan build. We will show you every finding.</p>
+      </div>
+      <a class="btn amber" href="mailto:info@syncrodocsystems.com?subject=SyncroDoc%20access%20request%3A%20Plan%20Operations%20Audit">Request access</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <nav class="foot-prods" aria-label="Products">
+      <a href="/products/plan-operations-audit/">Plan Operations Audit</a>
+      <a href="/products/plan-merger-document-tool/">Plan Merger Document Tool</a>
+      <a href="/products/meeting-minutes-intelligence/">Meeting Minutes Intelligence</a>
+      <a href="/products/fee-audit-tool/">Fee Audit Tool</a>
+    </nav>
+    <div class="foot-in">
+      <div>SyncroDoc Systems © <span id="yr">2026</span></div>
+      <div><a href="/">Platform</a> &nbsp;·&nbsp; <a href="/blog.html">Insights</a> &nbsp;·&nbsp; <a href="mailto:info@syncrodocsystems.com">info@syncrodocsystems.com</a></div>
+    </div>
+  </div>
+</footer>
+
+<script src="/products/demo.js"></script>
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+(function () {
+  var d = sdDemo;
+  function prog(r, lbl, pct, t, ok) {
+    var p = r.querySelector('.dm-prog');
+    p.querySelector('.lbl').textContent = lbl;
+    p.querySelector('.fill').style.width = pct + '%';
+    p.querySelector('.t').textContent = t;
+    if (ok) p.classList.add('ok');
+  }
+  var steps = [
+    [300, function (r) { prog(r, 'Reading documents', 30, '0:21'); }],
+    [1500, function (r) { prog(r, 'Auditing benefits', 78, '1:04'); }]
+  ];
+  for (var i = 0; i < 8; i++) {
+    (function (n) {
+      steps.push([n === 0 ? 900 : 260, function (r) { r.querySelectorAll('.au-grid .h')[n].classList.add('on'); }]);
+    })(i);
+  }
+  steps.push(
+    [500, function (r) {
+      prog(r, 'Complete', 100, '1:52', true);
+      d.on(r, '[data-s=pills],[data-s=done]');
+      d.count(r, '.c-ok', 41, 900);
+      d.count(r, '.c-mm', 3, 900);
+      d.count(r, '.c-mi', 1, 900);
+    }],
+    [1300, function (r) { d.on(r, '[data-s=review]'); }],
+    [1500, function (r) { r.querySelector('[data-s=confirm]').classList.add('press'); }],
+    [450, function (r) {
+      var b = r.querySelector('[data-s=confirm]');
+      b.classList.remove('press'); b.classList.add('confirmed'); b.textContent = 'Confirmed';
+      d.on(r, '[data-s=fix]');
+    }],
+    [900, function (r) { d.on(r, '[data-s=export]'); }]
+  );
+  d(document.getElementById('demo'), steps);
+})();
+</script>
+</body>
+</html>
