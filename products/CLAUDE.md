@@ -7,7 +7,7 @@ The SyncroDoc suite: one suite page and one landing page per product. Hand-writt
 |------|---------|
 | `index.html` | Suite page. Product cards grouped by "Plan documents" and "Governance and oversight", a "different document problem" tile, the annual-license note, and the shared-core tiles. JSON-LD `ItemList`. |
 | `plan-operations-audit/index.html` | Carrier benefit summary checked against the plan build used for claims setup. |
-| `plan-merger-document-tool/index.html` | Plans in a merger compared provision by provision. |
+| `plan-merger-document-tool/index.html` | Medical and pension plans in a merger compared provision by provision. |
 | `meeting-minutes-intelligence/index.html` | Board decisions found and cited across years of minutes. |
 | `fee-audit-tool/index.html` | Professional fees audited line by line over time. |
 | `products.css` | Layout for these pages plus the demo window styles (`.dm*`, `.au-*`, `.mg-*`, `.mm-*`, `.fa-*`). Loads after `/article.css` and uses its tokens. |
